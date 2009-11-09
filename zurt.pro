@@ -1,5 +1,5 @@
 TEMPLATE = app
-QT = gui core network sql
+QT = core network sql
 CONFIG += qt release warn_on console
 DESTDIR = build/bin
 OBJECTS_DIR = build/obj
