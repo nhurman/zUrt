@@ -9,12 +9,12 @@ int main(int argc, char *argv[])
 	QCoreApplication app(argc, argv);
 	
 	zUrt *bot = NULL;
-	Log::instance("coeur.log")->information("---------- Démarrage ----------");
+	Log::instance("coeur")->information("---------- Démarrage ----------");
 	
 	bot = new zUrt();
 	if(bot->serveur()->connecte())
 		retour = app.exec();
 	
-	Log::instance("coeur.log")->information("---------- Arrêt ----------\n\n");
+	Log::instance("coeur")->information("---------- Arrêt ----------\n\n");
 	return retour;
 }
