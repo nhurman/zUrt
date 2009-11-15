@@ -1,9 +1,8 @@
 #include "Log.h"
 
-QHash<QString, Log*> Log::m_instance;
-
 Log *Log::instance(QString nom)
 {
+	static QHash<QString, Log*> m_instance;
 	if(!m_instance.contains(nom))
 		m_instance[nom] = new Log(nom);
 	return m_instance[nom];

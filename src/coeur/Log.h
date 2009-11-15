@@ -16,7 +16,6 @@ class Log : public QObject
 		void erreur(QString erreur);
 	
 	private:
-		static QHash<QString, Log*> m_instance;
 		QFile *m_fichier;
 		
 		Log(QString nom);

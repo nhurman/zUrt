@@ -9,7 +9,7 @@ template<typename T> class Singleton
 			static T *instance = new T;
 			return instance;
 		}
-}
+};
 
 /* Utilisation
 class uneClasse : public Singleton<uneClasse>
