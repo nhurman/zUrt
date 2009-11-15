@@ -5,11 +5,5 @@ DESTDIR = build/bin
 OBJECTS_DIR = build/obj
 MOC_DIR = build/moc
 UI_DIR = build/ui
-
-SOURCES = \
-	src/main.cpp \
-	src/coeur/Serveur.cpp \
-	src/coeur/Log.cpp
-HEADERS += \
-	src/coeur/Serveur.h \
-	src/coeur/Log.h
+SOURCES = src/main.cpp src/coeur/Serveur.cpp src/coeur/Log.cpp
+HEADERS += src/coeur/Serveur.h src/coeur/Log.h

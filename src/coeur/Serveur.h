@@ -1,20 +1,24 @@
-#ifndef SERVEUR_H
-#define SERVEUR_H
+#ifndef HEADER_SERVEUR
+#define HEADER_SERVEUR
 
 #include <QtNetwork>
+#include "Log.h"
 
 class Serveur : public QObject
 {
 	public:
 		Serveur(QString adresse, quint16 port, QString password);
 		QString rcon(QString commande);
+		bool connecte();
 	
 	protected:
 		QHostAddress *m_adresse;
 		quint16 m_port;
-		QString m_password;
+		QString m_rcon;
+	
+	private:
 		QUdpSocket *m_socket;
+		bool m_connecte;
 };
 
 #endif
-

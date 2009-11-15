@@ -4,15 +4,25 @@
 #include <QFile>
 #include <QTextStream>
 #include <QString>
+#include <QDate>
+#include <QTime>
+#include <QHash>
+#include <iostream>
 
 class Log
 {
 	public:
+		static Log *instance(QString nom);
+		void information(QString information);		
+		void erreur(QString erreur);
+	
+	private:
+		static QHash<QString, Log*> m_instance;
+		QFile *m_fichier;
+		
 		Log(QString nom);
 		~Log();
-		void erreur(QString nom);
-	private:
-		QFile *m_fichier;
+		void ecrire(QString type, QString message, bool cout = false);
 };
 
 #endif
