@@ -8,7 +8,7 @@ class Serveur : public QObject
 {
 	public:
 		Serveur(QString adresse, quint16 port, QString password);
-		QString rcon(QString commande);
+		QString rcon(QString commande, bool reponse = false);
 		bool connecte();
 	
 	protected:

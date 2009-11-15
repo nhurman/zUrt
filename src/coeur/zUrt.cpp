@@ -8,6 +8,11 @@ zUrt::zUrt()
 		m_reglages->value("serveur/port").value<quint16>(),
 		m_reglages->value("serveur/rcon").toString()
 	);
+	if(!m_serveur->connecte())
+		return;
+	
+	m_log = new ParseurLog();
+	m_log->lireFichier();
 }
 
 Serveur *zUrt::serveur()
@@ -15,12 +20,20 @@ Serveur *zUrt::serveur()
 	return m_serveur;
 }
 
+QSettings *zUrt::reglages()
+{
+	return m_reglages;
+}
+
 void zUrt::charger(Module *module)
 {
 	QString nom = module->nom();
 	if(!m_modules.contains(nom))
 	{
-		module->setServeur(m_serveur)
 		m_modules[nom] = module;
+		Log::instance("coeur")->information(
+			tr("Chargement du module %1.")
+			.arg(nom)
+		);
 	}
 }
