@@ -1,5 +1,5 @@
-#ifndef HEADER_SERVEUR
-#define HEADER_SERVEUR
+#ifndef __SERVEUR_H__
+#define __SERVEUR_H__
 
 #include <QtNetwork>
 #include "Log.h"

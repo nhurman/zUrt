@@ -8,7 +8,7 @@ Serveur::Serveur(QString adresse, quint16 port, QString rcon)
 	m_socket = new QUdpSocket(this);
 	m_connecte = true;
 	
-	if(Serveur::rcon("status") == "")
+	if(this->rcon("status") == "")
 		Log::instance("coeur.log")->erreur(
 			tr("Connexion au serveur %1 sur le port %2 impossible.")
 			.arg(m_adresse->toString())

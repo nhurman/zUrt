@@ -6,4 +6,4 @@ OBJECTS_DIR = build/obj
 MOC_DIR = build/moc
 UI_DIR = build/ui
 SOURCES = src/main.cpp src/coeur/Serveur.cpp src/coeur/Log.cpp
-HEADERS += src/coeur/Serveur.h src/coeur/Log.h
+HEADERS += src/coeur/Serveur.h src/coeur/Log.h src/coeur/Singleton.h

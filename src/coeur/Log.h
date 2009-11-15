@@ -1,5 +1,5 @@
-#ifndef HEADER_LOG
-#define HEADER_LOG
+#ifndef __LOG_H__
+#define __LOG_H__
 
 #include <QFile>
 #include <QTextStream>
