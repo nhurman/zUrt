@@ -7,9 +7,8 @@
 #include <QDate>
 #include <QTime>
 #include <QHash>
-#include <iostream>
 
-class Log
+class Log : public QObject
 {
 	public:
 		static Log *instance(QString nom);
@@ -22,7 +21,7 @@ class Log
 		
 		Log(QString nom);
 		~Log();
-		void ecrire(QString type, QString message, bool cout = false);
+		void ecrire(QString type, QString message);
 };
 
 #endif

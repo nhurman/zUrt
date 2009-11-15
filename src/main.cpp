@@ -1,6 +1,5 @@
 #include <QCoreApplication>
 #include <QSettings>
-#include <iostream>
 #include "coeur/Serveur.h"
 
 int main(int argc, char *argv[])

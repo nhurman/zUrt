@@ -19,22 +19,23 @@ Log::~Log()
 	m_fichier->close();
 }
 
-void Log::ecrire(QString type, QString message, bool cout)
+void Log::ecrire(QString type, QString message)
 {
 	QTextStream out(m_fichier);
-	QString ligne = QDate::currentDate().toString("[dd/MM/yy ")
-		+ QTime::currentTime().toString("hh:mm]")
-		+ " " + type + " : " + message;
+	QString ligne = QObject::tr("[%1 %2] %3 : %4")
+					.arg(QDate::currentDate().toString(tr("dd/MM/yy")))
+					.arg(QTime::currentTime().toString(tr("hh:mm")))
+					.arg(type)
+					.arg(message);
 	out << ligne << endl;
-	cout && std::cout << ligne.toStdString() << std::endl;
 }
 
 void Log::information(QString information)
 {
-	ecrire("Information", information);
+	ecrire(tr("Information"), information);
 }
 
 void Log::erreur(QString erreur)
 {
-	ecrire("Erreur", erreur, true);
+	ecrire(tr("Erreur"), erreur);
 }

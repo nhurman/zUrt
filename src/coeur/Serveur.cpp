@@ -9,13 +9,17 @@ Serveur::Serveur(QString adresse, quint16 port, QString rcon)
 	m_connecte = true;
 	
 	if(Serveur::rcon("status") == "")
-		Log::instance("coeur.log")->erreur("Connexion au serveur "
-			+ adresse + " sur le port "
-			+ QString().sprintf("%d", port)
-			+ " impossible.");
+		Log::instance("coeur.log")->erreur(
+			tr("Connexion au serveur %1 sur le port %2 impossible")
+			.arg(m_adresse->toString())
+			.arg(QString::number(m_port))
+		);
 	else
-		Log::instance("coeur.log")->information("Connecte a "
-			+ adresse + " sur le port " + QString().sprintf("%d.", port));
+		Log::instance("coeur.log")->erreur(
+			tr("Connecté au serveur %1 sur le port %2")
+			.arg(m_adresse->toString())
+			.arg(QString::number(m_port))
+		);
 }
 
 QString Serveur::rcon(QString commande)
