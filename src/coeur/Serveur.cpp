@@ -10,13 +10,13 @@ Serveur::Serveur(QString adresse, quint16 port, QString rcon)
 	
 	if(Serveur::rcon("status") == "")
 		Log::instance("coeur.log")->erreur(
-			tr("Connexion au serveur %1 sur le port %2 impossible")
+			tr("Connexion au serveur %1 sur le port %2 impossible.")
 			.arg(m_adresse->toString())
 			.arg(QString::number(m_port))
 		);
 	else
 		Log::instance("coeur.log")->erreur(
-			tr("Connecté au serveur %1 sur le port %2")
+			tr("ConnectÃ© au serveur %1 sur le port %2.")
 			.arg(m_adresse->toString())
 			.arg(QString::number(m_port))
 		);

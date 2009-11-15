@@ -12,7 +12,7 @@ class Log : public QObject
 {
 	public:
 		static Log *instance(QString nom);
-		void information(QString information);		
+		void information(QString information);
 		void erreur(QString erreur);
 	
 	private:

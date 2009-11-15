@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 	QCoreApplication app(argc, argv);
 	QSettings reglages("zurt.cfg", QSettings::IniFormat);
 	
-	Log::instance("coeur.log")->information("---------- Demarrage ----------");
+	Log::instance("coeur.log")->information("---------- Démarrage ----------");
 	
 	Serveur *serveur = new Serveur(
 		reglages.value("serveur/ip").toString(),
@@ -19,6 +19,6 @@ int main(int argc, char *argv[])
 	if(serveur->connecte())
 		retour = app.exec();
 	
-	Log::instance("coeur.log")->information("---------- Arret ----------\n\n");
+	Log::instance("coeur.log")->information("---------- Arrêt ----------\n\n");
 	return retour;
 }
