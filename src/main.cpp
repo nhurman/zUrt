@@ -19,6 +19,6 @@ int main(int argc, char *argv[])
 	if(serveur->connecte())
 		retour = app.exec();
 	
-	Log::instance("coeur.log")->information("---------- Arret ----------\n\n\n");
+	Log::instance("coeur.log")->information("---------- Arret ----------\n\n");
 	return retour;
 }

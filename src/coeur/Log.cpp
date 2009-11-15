@@ -10,7 +10,7 @@ Log *Log::instance(QString nom)
 }
 Log::Log(QString nom)
 {
-	m_fichier = new QFile(nom);
+	m_fichier = new QFile("logs/" + nom);
 	m_fichier->open(QIODevice::Append);
 }
 
