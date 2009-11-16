@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QThread>
 
-class ParseurLog : public QObject
+class ParseurLog : public QThread
 {
 	public:
 		ParseurLog();

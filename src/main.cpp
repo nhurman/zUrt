@@ -4,7 +4,7 @@
 #include "coeur/zUrt.h"
 #include <iostream>
 
-#include "modules/Bonjour.h"
+#include "modules/Admin.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,8 +14,7 @@ int main(int argc, char *argv[])
 	Log::instance("coeur")->information("---------- Démarrage ----------");
 	
 	bot = zUrt::instance();
-	Module_Bonjour *bj = new Module_Bonjour;
-	bot->charger(bj);
+	bot->charger(new Module_Admin);
 	
 	if(bot->serveur()->connecte())
 		retour = app.exec();

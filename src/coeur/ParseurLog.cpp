@@ -22,11 +22,10 @@ void ParseurLog::lireFichier()
 	while(true)
 	{
 		if(in.atEnd())
-			usleep(250000);
+			currentThread()->usleep(250000);
 		else
 		{
 			QString ligne = in.readLine();
-			std::cout << ligne.toStdString() << std::endl;
 		}
 	}
 }
