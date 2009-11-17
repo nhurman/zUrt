@@ -2,7 +2,7 @@
 
 zUrt::zUrt()
 {
-	m_reglages = new QSettings("zurt.cfg", QSettings::IniFormat);
+	m_reglages = new QSettings("config/zurt.cfg", QSettings::IniFormat);
 	m_serveur = new Serveur(
 		m_reglages->value("serveur/ip").toString(),
 		m_reglages->value("serveur/port").value<quint16>(),

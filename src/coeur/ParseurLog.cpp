@@ -43,6 +43,5 @@ void ParseurLog::parserLigne(QString ligne)
 	QString type = segments.takeFirst();
 	if(type[type.length() - 1] == ':')
 		type.resize(type.length() - 1);
-	
 	zUrt::instance()->evenement(type, segments);
 }
