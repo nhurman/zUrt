@@ -2,23 +2,19 @@
 #include <QCoreApplication>
 #include <QSettings>
 #include "coeur/zUrt.h"
-#include <iostream>
-
-#include "modules/Admin.h"
+#include "modules/Bonjour.h"
 
 int main(int argc, char *argv[])
 {
-	int retour = 0;
-	zUrt *bot = NULL;
+	zUrt *bot = NULL;	
 	QCoreApplication app(argc, argv);
-	Log::instance("coeur")->information("---------- Démarrage ----------");
+	
+	Log::instance("coeur")->donnees("\n\n\n\n");
+	Log::instance("coeur")->information("---------- Démarrage ----------");	
 	
 	bot = zUrt::instance();
-	bot->charger(new Module_Admin);
+	bot->charger(new Module_Bonjour);
+	bot->demarrer();
 	
-	if(bot->serveur()->connecte())
-		retour = app.exec();
-	
-	Log::instance("coeur")->information("---------- Arrêt ----------\n\n\n");
-	return retour;
+	return app.exec();
 }

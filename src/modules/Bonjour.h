@@ -1,9 +1,10 @@
-#ifndef ADMIN_H
-#define ADMIN_H
+#ifndef __BONJOUR_H__
+#define __BONJOUR_H__
 
+#include "../coeur/zUrt.h"
 #include "../coeur/Module.h"
 
-class Module_Admin : public Module
+class Module_Bonjour : public Module
 {
 	Q_OBJECT
 

@@ -7,6 +7,7 @@ Log *Log::instance(QString nom)
 		m_instance[nom] = new Log(nom);
 	return m_instance[nom];
 }
+
 Log::Log(QString nom)
 {
 	m_fichier = new QFile("logs/" + nom + ".log");
@@ -37,4 +38,10 @@ void Log::information(QString information)
 void Log::erreur(QString erreur)
 {
 	ecrire(tr("Erreur"), erreur);
+}
+
+void Log::donnees(QString donnees)
+{
+	QTextStream out(m_fichier);
+	out << donnees;
 }

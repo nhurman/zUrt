@@ -10,6 +10,6 @@ QStringList Module_Admin::ecoute()
 	return QStringList() << "say";
 }
 
-void Module_Admin::evenement(QString type, QString parametres)
+void Module_Admin::evenement(QString type, Arguments args)
 {
 }

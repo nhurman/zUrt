@@ -2,9 +2,10 @@
 #define __PARSEURLOG_H__
 
 #include <QFile>
-#include <QThread>
+#include <QStringList>
+#include "Sleep.h"
 
-class ParseurLog : public QThread
+class ParseurLog : public QObject
 {
 	public:
 		ParseurLog();
@@ -12,6 +13,8 @@ class ParseurLog : public QThread
 	
 	private:
 		QFile *m_fichier;
+		
+		void parserLigne(QString ligne);
 };
 
 #include "zUrt.h"

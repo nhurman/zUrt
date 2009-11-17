@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QStringList>
+#include "Arguments.h"
 
 class Module : public QObject
 {
@@ -15,7 +16,7 @@ class Module : public QObject
 		virtual QStringList ecoute() = 0;
 	
 	public slots:
-		virtual void evenement(QString type, QString parametres) = 0;
+		virtual void evenement(QString type, Arguments args) = 0;
 };
 
 #endif

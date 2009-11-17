@@ -8,9 +8,11 @@ zUrt::zUrt()
 		m_reglages->value("serveur/port").value<quint16>(),
 		m_reglages->value("serveur/rcon").toString()
 	);
-	if(!m_serveur->connecte())
-		return;
-	
+	m_serveur->say("Salut tout le monde !");
+}
+
+void zUrt::demarrer()
+{
 	m_log = new ParseurLog();
 	m_log->lireFichier();
 }
@@ -36,4 +38,12 @@ void zUrt::charger(Module *module)
 			.arg(nom)
 		);
 	}
+}
+
+void zUrt::evenement(QString type, QStringList parametres)
+{
+	Arguments args = Arguments(parametres);
+	foreach(Module *module, m_modules)
+		if(module->ecoute().contains(type))
+			module->evenement(type, args);
 }

@@ -14,6 +14,7 @@ class Log : public QObject
 		static Log *instance(QString nom);
 		void information(QString information);
 		void erreur(QString erreur);
+		void donnees(QString donnees);
 	
 	private:
 		QFile *m_fichier;

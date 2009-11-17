@@ -12,9 +12,11 @@ class zUrt : public QObject, public Singleton<zUrt>
 {
 	public:
 		zUrt();
+		void demarrer();
 		void charger(Module *module);
 		Serveur *serveur();
 		QSettings *reglages();
+		void evenement(QString type, QStringList parametres);
 	
 	protected:
 		QHash<QString, Module*> m_modules;

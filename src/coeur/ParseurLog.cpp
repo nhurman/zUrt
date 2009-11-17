@@ -2,16 +2,21 @@
 
 ParseurLog::ParseurLog()
 {
-	m_fichier = new QFile(
-		zUrt::instance()
+	QString path = zUrt::instance()
 		->reglages()
 		->value("serveur/log")
-		.toString());
-	if(m_fichier->exists())
+		.toString();
+	m_fichier = new QFile(path);
+	if(!m_fichier->exists())
 	{
-		m_fichier->open(QIODevice::ReadOnly);
-		m_fichier->seek(m_fichier->size());
+		Log::instance("coeur")->erreur(
+			tr("Le log d'urban terror est introuvable (%1).")
+			.arg(m_fichier->fileName())
+		);
+		exit(0);
 	}
+	m_fichier->open(QIODevice::ReadOnly);
+	m_fichier->seek(m_fichier->size());
 }
 
 void ParseurLog::lireFichier()
@@ -22,10 +27,22 @@ void ParseurLog::lireFichier()
 	while(true)
 	{
 		if(in.atEnd())
-			currentThread()->usleep(250000);
+			Sleep::msleep(250);
 		else
-		{
-			QString ligne = in.readLine();
-		}
+			parserLigne(in.readLine());
 	}
+}
+
+void ParseurLog::parserLigne(QString ligne)
+{
+	QStringList segments = ligne.split(" ", QString::SkipEmptyParts);
+	if(segments.length() < 3)
+		return;
+	segments.removeFirst();
+	
+	QString type = segments.takeFirst();
+	if(type[type.length() - 1] == ':')
+		type.resize(type.length() - 1);
+	
+	zUrt::instance()->evenement(type, segments);
 }
