@@ -2,7 +2,7 @@
 
 zUrt::zUrt()
 {
-	m_reglages = new QSettings("zurt.cfg", QSettings::IniFormat);
+	m_reglages = new QSettings("config/zurt.cfg", QSettings::IniFormat);
 	m_serveur = new Serveur(
 		m_reglages->value("serveur/ip").toString(),
 		m_reglages->value("serveur/port").value<quint16>(),
@@ -27,7 +27,7 @@ QSettings *zUrt::reglages()
 	return m_reglages;
 }
 
-Module *module(QString nom)
+Module* zUrt::module(QString nom)
 {
 	if(!m_modules.contains(nom))
 		return NULL;

@@ -3,6 +3,7 @@
 
 #include <QHash>
 #include <QSettings>
+#include <iostream>
 #include "ParseurLog.h"
 #include "Singleton.h"
 #include "Module.h"
