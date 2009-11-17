@@ -16,6 +16,7 @@ class zUrt : public QObject, public Singleton<zUrt>
 		void charger(Module *module);
 		Serveur *serveur();
 		QSettings *reglages();
+		Module *module(QString nom);
 		void evenement(QString type, QStringList parametres);
 	
 	protected:

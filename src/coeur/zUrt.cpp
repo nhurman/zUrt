@@ -27,6 +27,13 @@ QSettings *zUrt::reglages()
 	return m_reglages;
 }
 
+Module *module(QString nom)
+{
+	if(!m_modules.contains(nom))
+		return NULL;
+	return m_modules[nom];
+}
+
 void zUrt::charger(Module *module)
 {
 	QString nom = module->nom();
