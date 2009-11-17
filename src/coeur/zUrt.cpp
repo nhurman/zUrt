@@ -27,7 +27,7 @@ QSettings *zUrt::reglages()
 	return m_reglages;
 }
 
-Module *module(QString nom)
+Module *zUrt::module(QString nom)
 {
 	if(!m_modules.contains(nom))
 		return NULL;
