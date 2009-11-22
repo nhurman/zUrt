@@ -22,3 +22,26 @@ QString Arguments::get(unsigned int index, bool fusionner)
  		retour << m_arguments[i];
  	return retour.join(" ");
 }
+
+ConfigString Arguments::cs(unsigned int index)
+{
+	QString chaine = get(index, true);
+	QStringList segments = chaine.split("\\");
+	segments.removeFirst();
+	ConfigString cs;
+	unsigned int taille = segments.length();
+	for(unsigned int i = 0; i + 1 < taille; i += 2)
+		cs[segments[i]] = segments[i + 1];
+	return cs;
+}
+
+ConfigString Arguments::fusionnerCs(ConfigString a, ConfigString b)
+{
+	QHashIterator<QString, QString> i(a);
+	while(i.hasNext())
+	{
+		i.next();
+		b[i.key()] = i.value();
+	}
+	return b;
+}

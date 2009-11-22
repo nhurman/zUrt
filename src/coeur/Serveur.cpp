@@ -1,17 +1,17 @@
 #include "Serveur.h"
 
-Serveur::Serveur(QString adresse, quint16 port, QString rcon)
+Serveur::Serveur(QString adresse, quint16 port, QString password)
 {
 	m_adresse = new QHostAddress(adresse);
 	m_port = port;
-	m_rcon = rcon;
+	m_rcon = password;
 	m_socket = new QUdpSocket(this);
 	m_socket->bind(0);
 	m_connecte = true;
 	
 	delai.addSecs(10);
 	
-	if(this->rcon("status", true) == "")
+	if(rcon("status", true) == "")
 		Log::instance("coeur")->erreur(
 			tr("Connexion au serveur %1 sur le port %2 impossible.")
 			.arg(m_adresse->toString())
@@ -19,7 +19,7 @@ Serveur::Serveur(QString adresse, quint16 port, QString rcon)
 		);
 	else
 	{
-		this->set("g_logSync", "1");
+		set("g_logSync", "1");
 		Log::instance("coeur")->information(
 			tr("Connecté au serveur %1 sur le port %2.")
 			.arg(m_adresse->toString())
@@ -30,6 +30,8 @@ Serveur::Serveur(QString adresse, quint16 port, QString rcon)
 
 QString Serveur::rcon(QString commande, bool reponse)
 {
+	if(!m_connecte)
+		return QString();
 	static const int INTERVALLE_RCON = 500;
 	if(delai.elapsed() < INTERVALLE_RCON)
 		Sleep::msleep(INTERVALLE_RCON);
