@@ -14,6 +14,8 @@ class Serveur : public QObject
 		void say(QString texte);
 		void set(QString var, QString valeur);
 		bool connecte();
+		
+		static QString nettoyer(QString str);
 	
 	protected:
 		QHostAddress *m_adresse;

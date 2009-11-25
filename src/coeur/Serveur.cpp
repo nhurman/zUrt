@@ -66,14 +66,19 @@ QString Serveur::rcon(QString commande, bool reponse)
 	return retour.right(retour.size() - enTete.size());
 }
 
+QString Serveur::nettoyer(QString str)
+{
+	return str.replace("\"", "");
+}
+
 void Serveur::say(QString texte)
 {
-	rcon("say \"^7" + texte + "\"");
+	rcon("say \"^7" + nettoyer(texte) + "\"");
 }
 
 void Serveur::set(QString var, QString valeur)
 {
-	rcon("seta " + var + " \"" + valeur + "\"");
+	rcon("seta " + var + " \"" + nettoyer(valeur) + "\"");
 }
 
 bool Serveur::connecte()
