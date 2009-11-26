@@ -12,6 +12,9 @@ class Serveur : public QObject
 		Serveur(QString adresse, quint16 port, QString password);
 		QString rcon(QString commande, bool reponse = false);
 		void say(QString texte);
+		void tell(int id, QString texte);
+		void kick(int id);
+		void reload();
 		void set(QString var, QString valeur);
 		bool connecte();
 		

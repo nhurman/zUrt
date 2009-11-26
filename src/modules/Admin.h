@@ -2,6 +2,8 @@
 #define ADMIN_H
 
 #include "../coeur/Module.h"
+#include "../coeur/zUrt.h"
+#include "../modules/Joueur.h"
 
 class Module_Admin : public Module
 {

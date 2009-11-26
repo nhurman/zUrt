@@ -20,6 +20,7 @@ Serveur::Serveur(QString adresse, quint16 port, QString password)
 	else
 	{
 		set("g_logSync", "1");
+		reload();
 		Log::instance("coeur")->information(
 			tr("Connecté au serveur %1 sur le port %2.")
 			.arg(m_adresse->toString())
@@ -76,9 +77,24 @@ void Serveur::say(QString texte)
 	rcon("say \"^7" + nettoyer(texte) + "\"");
 }
 
+void Serveur::tell(int id, QString texte)
+{
+	rcon("tell " + QString::number(id) + "\"^7" + nettoyer(texte) + "\"");
+}
+
+void Serveur::kick(int id)
+{
+	rcon("kick " + QString::number(id));
+}
+
 void Serveur::set(QString var, QString valeur)
 {
 	rcon("seta " + var + " \"" + nettoyer(valeur) + "\"");
+}
+
+void Serveur::reload()
+{
+	rcon("reload");
 }
 
 bool Serveur::connecte()

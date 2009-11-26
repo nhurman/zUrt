@@ -4,6 +4,7 @@
 #include "coeur/zUrt.h"
 
 #include "modules/Bonjour.h"
+#include "modules/Admin.h"
 #include "modules/Joueur.h"
 
 int main(int argc, char *argv[])
@@ -15,8 +16,8 @@ int main(int argc, char *argv[])
 	Log::instance("coeur")->donnees("\n\n\n");
 	
 	bot = zUrt::instance();
-	bot->charger(new Module_Bonjour);
 	bot->charger(new Module_Joueur);
+	bot->charger(new Module_Admin);
 	bot->demarrer();
 	
 	return app.exec();
