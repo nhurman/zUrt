@@ -31,9 +31,7 @@ void Module_Admin::evenement(QString type, Arguments args)
 			}
 			else
 			{
-				zUrt::instance()->serveur()->tell(id_admin, "Syntaxe : ");
-				zUrt::instance()->serveur()->tell(id_admin, "kick <nom>");
-				zUrt::instance()->serveur()->tell(id_admin, "kick <id>");
+				zUrt::instance()->serveur()->tell(id_admin, "Syntaxe : kick [^3nom^7|^3id^7]");
 			}
 		}
 	}
