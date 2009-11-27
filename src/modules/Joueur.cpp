@@ -48,29 +48,51 @@ int Module_Joueur::matchOnePlayer(QString cle, unsigned int id_admin)
 	QList <int> liste;
 	QString nom;
 	QHashIterator<unsigned int, ConfigString> i(m_joueurs);
-	while(i.hasNext())
+	bool nombre = false;
+	int id = cle.toInt(&nombre);
+	if(nombre)
 	{
-		i.next();
-		nom = get(i.key(), "name");
-		if(nom != "" && nom.toLower().contains(cle.toLower()))
-			liste << i.key();
-	}
-
-	if(liste.isEmpty())
-	{
-		if(connecte(id_admin))
+		if(connecte(id))
+		{
+			return id;
+		}
+		else
+		{
 			zUrt::instance()->serveur()->tell(id_admin,
-				tr("Aucun joueur trouve pour la recherche %1.")
-				 .arg(cle)
-			);
-		return -1;
+								tr("Aucun joueur trouve avec l'id %1.")
+								.arg(QString::number(id))
+							);
+			return -1;
+		}
 	}
-	else if(liste.size() == 1)
-		return liste[0];
 	else
 	{
-		// Lister les joueurs avec la correspondance id => pseudo
-		return -1;
+		while(i.hasNext())
+		{
+			i.next();
+			nom = get(i.key(), "name");
+			if(nom != "" && nom.toLower().contains(cle.toLower()))
+				liste << i.key();
+		}
+
+		if(liste.isEmpty())
+		{
+			if(connecte(id_admin))
+			{
+				zUrt::instance()->serveur()->tell(id_admin,
+					tr("Aucun joueur trouve pour la recherche %1.")
+					 .arg(cle)
+				);
+			}
+			return -1;
+		}
+		else if(liste.size() == 1)
+			return liste[0];
+		else
+		{
+			//Plusieurs correspondances id => name
+			return -1;
+		}
 	}
 }
 
