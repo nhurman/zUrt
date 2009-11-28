@@ -87,6 +87,11 @@ void Serveur::kick(int id)
 	rcon("kick " + QString::number(id));
 }
 
+void Serveur::mute(int id)
+{
+	rcon("mute " + QString::number(id));
+}
+
 void Serveur::set(QString var, QString valeur)
 {
 	rcon("seta " + var + " \"" + nettoyer(valeur) + "\"");

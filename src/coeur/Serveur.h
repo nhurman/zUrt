@@ -14,6 +14,7 @@ class Serveur : public QObject
 		void say(QString texte);
 		void tell(int id, QString texte);
 		void kick(int id);
+		void mute(int id);
 		void reload();
 		void set(QString var, QString valeur);
 		bool connecte();

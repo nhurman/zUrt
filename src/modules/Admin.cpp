@@ -34,5 +34,20 @@ void Module_Admin::evenement(QString type, Arguments args)
 				zUrt::instance()->serveur()->tell(id_admin, "Syntaxe : kick [^3nom^7|^3id^7]");
 			}
 		}
+		if(commande == "mute")
+		{
+			if(args.get(3) != "")
+			{
+				int joueur = j->matchOnePlayer(args.get(3), id_admin);
+				if(joueur != -1)
+				{
+					zUrt::instance()->serveur()->mute(joueur);
+				}
+			}
+			else
+			{
+				zUrt::instance()->serveur()->tell(id_admin, "Syntaxe : mute [^3nom^7|^3id^7]");
+			}
+		}
 	}
 }
