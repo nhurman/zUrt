@@ -13,8 +13,7 @@ QStringList Module_Admin::ecoute()
 void Module_Admin::evenement(QString type, Arguments args)
 {
 	Module_Joueur *j = dynamic_cast<Module_Joueur*>(zUrt::instance()->module("Joueur"));
-	QString message = args.get(2, true);
-	int id_admin = j->matchOnePlayer(args.get(1));
+	int id_admin = j->matchOnePlayer(args.get(0)).toInt();
 	if(message[0] == '!')
 	{
 		QString commande = args.get(2);
