@@ -5,7 +5,7 @@ QStringList Module_Bonjour::ecoute()
 	return QStringList() << "say";
 }
 
-void Module_Bonjour::evenement(QString type, Arguments args)
+void Module_Bonjour::evenement(QString /*type*/, Arguments args)
 {
 	Module_Joueur *j = dynamic_cast<Module_Joueur*>(zUrt::instance()->module("Joueur"));
 	zUrt::instance()->serveur()->say(

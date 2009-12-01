@@ -23,7 +23,7 @@ QStringList Module_Admin::ecoute()
 	return QStringList() << "say";
 }
 
-void Module_Admin::evenement(QString type, Arguments args)
+void Module_Admin::evenement(QString /*type*/, Arguments args)
 {
 	Module_Joueur *j = dynamic_cast<Module_Joueur*>(
 		zUrt::instance()->module("Joueur"));
