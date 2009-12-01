@@ -38,6 +38,7 @@ void ParseurLog::parserLigne(QString ligne)
 	QStringList segments = ligne.split(" ", QString::SkipEmptyParts);
 	if(segments.length() < 3)
 		return;
+	// Heures:minutes
 	segments.removeFirst();
 	
 	QString type = segments.takeFirst();

@@ -11,6 +11,8 @@ class Arguments
 	public:
 		Arguments(QStringList parametres);
 		QString get(unsigned int index, bool fusionner = false);
+		unsigned int nombre();
+		void couper(unsigned int index);
 		ConfigString cs(unsigned int index);
 		static ConfigString fusionnerCs(ConfigString a, ConfigString b);
 	

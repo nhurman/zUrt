@@ -9,11 +9,15 @@ Arguments::Arguments(QStringList parametres)
 			m_arguments[i].resize(m_arguments[i].length() - 1);
 }
 
+unsigned int Arguments::nombre()
+{
+	return m_nombre;
+}
+
 QString Arguments::get(unsigned int index, bool fusionner)
 {
 	if(index >= m_nombre)
 		return QString();
-	
 	if(!fusionner)
 		return m_arguments[index];
 	
@@ -21,6 +25,12 @@ QString Arguments::get(unsigned int index, bool fusionner)
 	for(unsigned int i = index; i < m_nombre; i++)
  		retour << m_arguments[i];
  	return retour.join(" ");
+}
+
+void Arguments::couper(unsigned int index)
+{
+	m_arguments = get(index, true).split(" ");
+	m_nombre = m_arguments.length();
 }
 
 ConfigString Arguments::cs(unsigned int index)

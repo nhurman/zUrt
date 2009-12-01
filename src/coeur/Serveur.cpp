@@ -20,7 +20,7 @@ Serveur::Serveur(QString adresse, quint16 port, QString password)
 	else
 	{
 		set("g_logSync", "1");
-		reload();
+		//reload();
 		Log::instance("coeur")->information(
 			tr("Connecté au serveur %1 sur le port %2.")
 			.arg(m_adresse->toString())

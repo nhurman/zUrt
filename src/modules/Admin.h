@@ -5,6 +5,14 @@
 #include "../coeur/zUrt.h"
 #include "../modules/Joueur.h"
 
+struct Commande
+{
+	QString nom;
+	unsigned int args;
+	QString syntaxe;
+	QString aide;
+};
+
 class Module_Admin : public Module
 {
 	Q_OBJECT
@@ -15,6 +23,12 @@ class Module_Admin : public Module
 
 	public slots:
 		void evenement(QString type, Arguments args);
+		
+	protected:
+		Commande *getCommande(Arguments args);
+		
+		static Commande m_commandes[];
+		static unsigned int m_nombreCommandes;
 };
 
 #endif
