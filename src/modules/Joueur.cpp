@@ -43,7 +43,7 @@ QHash<unsigned int, ConfigString> Module_Joueur::get()
 	return m_joueurs;
 }
 
-unsigned int Module_Joueur::matchOnePlayer(QString cle, unsigned int id_admin)
+int Module_Joueur::matchOnePlayer(QString cle, int id_admin)
 {
 	QList <int> liste;
 	QString nom;
@@ -85,7 +85,7 @@ unsigned int Module_Joueur::matchOnePlayer(QString cle, unsigned int id_admin)
 		QString out = "Plusieurs joueurs ont ete trouves, "
 			"veuillez utiliser l'id : ";
 		for(int i = 0, j = liste.size(); i < j; i++)
-			out += tr("%1 = %2^7, ")
+			out += tr("%1 => %2^7, ")
 				.arg(liste[i])
 				.arg(get(i, "name"));
 		zUrt::instance()->serveur()->tell(id_admin, out.left(out.size() - 2));

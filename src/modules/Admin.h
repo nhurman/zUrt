@@ -8,7 +8,7 @@
 struct Commande
 {
 	QString nom;
-	unsigned int args;
+	unsigned int minArgs;
 	QString syntaxe;
 	QString aide;
 };

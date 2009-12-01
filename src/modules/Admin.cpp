@@ -35,7 +35,7 @@ void Module_Admin::evenement(QString type, Arguments args)
 	Commande *commande = getCommande(args);
 	if(!commande)
 		return;
-	if(args.nombre() <= commande->args)
+	if(args.nombre() <= commande->minArgs)
 	{
 		zUrt::instance()->serveur()->tell(id_admin,
 			tr("Syntaxe : !%1 %2")

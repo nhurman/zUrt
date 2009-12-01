@@ -16,7 +16,7 @@ class Module_Joueur : public Module
 		QString get(QString id, QString cle);
 		QString get(unsigned int id, QString cle);
 		QHash<unsigned int, ConfigString> get();
-		unsigned int matchOnePlayer(QString cle, unsigned int id_admin = -1);
+		int matchOnePlayer(QString cle, int id_admin = -1);
 		bool connecte(QString id);
 		bool connecte(unsigned int id);
 
