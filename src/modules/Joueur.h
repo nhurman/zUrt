@@ -1,10 +1,7 @@
 #ifndef __JOUEUR_H__
 #define __JOUEUR_H__
 
-#include <QHash>
 #include "../coeur/zUrt.h"
-#include "../coeur/Module.h"
-
 
 class Module_Joueur : public Module
 {

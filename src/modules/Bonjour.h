@@ -2,7 +2,6 @@
 #define __BONJOUR_H__
 
 #include "../coeur/zUrt.h"
-#include "../coeur/Module.h"
 #include "Joueur.h"
 
 class Module_Bonjour : public Module

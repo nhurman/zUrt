@@ -10,7 +10,7 @@ ParseurLog::ParseurLog()
 	if(!m_fichier->exists())
 	{
 		Log::instance("coeur")->erreur(
-			tr("Le log d'urban terror est introuvable (%1).")
+			tr("Le log d'Urban Terror est introuvable (%1).")
 			.arg(m_fichier->fileName())
 		);
 		exit(0);
