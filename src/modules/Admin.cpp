@@ -3,7 +3,7 @@
 // Sorted commands list, see Admin.h for syntax.
 Admin_Command Module_Admin::m_commands[] = {
 	{	tr("admintest"), 0, "",
-		tr("Displays you admin level.")
+		tr("Displays your admin level.")
 	},
 	{	tr("kick"), 1, tr("[^3name^7|^3id^7]"),
 		tr("Kicks a player from the server.")
@@ -12,7 +12,7 @@ Admin_Command Module_Admin::m_commands[] = {
 		tr("Mutes a player.")
 	},
 	{	tr("readconfig"), 0, "",
-		tr("Reloads admins and admin levels.")
+		tr("Reloads admins and levels.")
 	}
 };
 
