@@ -9,16 +9,16 @@ typedef QHash<QString, QString> ConfigString;
 class Arguments
 {
 	public:
-		Arguments(QStringList parametres);
-		QString get(unsigned int index, bool fusionner = false);
-		unsigned int nombre();
-		void couper(unsigned int index);
+		Arguments(QStringList parameters);
+		QString get(unsigned int index, bool merge = false);
+		unsigned int size();
+		void truncate(unsigned int index);
 		ConfigString cs(unsigned int index);
-		static ConfigString fusionnerCs(ConfigString a, ConfigString b);
+		static ConfigString mergeCs(ConfigString a, ConfigString b);
 	
 	private:
 		QStringList m_arguments;
-		unsigned int m_nombre;
+		unsigned int m_size;
 };
 
 #endif

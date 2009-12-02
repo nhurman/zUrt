@@ -13,15 +13,15 @@ class Log : public QObject
 	public:
 		static Log *instance(QString nom);
 		void information(QString information);
-		void erreur(QString erreur);
-		void donnees(QString donnees);
+		void error(QString error);
+		void data(QString data);
 	
 	private:
-		QFile *m_fichier;
+		QFile *m_file;
 		
 		Log(QString nom);
 		~Log();
-		void ecrire(QString type, QString message);
+		void write(QString type, QString message);
 };
 
 #endif

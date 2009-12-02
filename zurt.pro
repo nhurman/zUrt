@@ -7,25 +7,23 @@ MOC_DIR = build/moc
 UI_DIR = build/ui
 SOURCES = \
  src/main.cpp \
- src/coeur/Arguments.cpp \
- src/coeur/Log.cpp \
- src/coeur/ParseurLog.cpp \
- src/coeur/Serveur.cpp \
- src/coeur/zUrt.cpp \
+ src/core/Arguments.cpp \
+ src/core/Log.cpp \
+ src/core/LogParser.cpp \
+ src/core/Server.cpp \
+ src/core/zUrt.cpp \
  \
- src/modules/Joueur.cpp \
- src/modules/Admin.cpp \
- src/modules/Bonjour.cpp
+ src/modules/Player.cpp \
+ src/modules/Admin.cpp
 HEADERS += \
- src/coeur/Arguments.h \
- src/coeur/Log.h \
- src/coeur/Module.h \
- src/coeur/ParseurLog.h \
- src/coeur/Serveur.h \
- src/coeur/Singleton.h \
- src/coeur/Sleep.h \
- src/coeur/zUrt.h \
+ src/core/Arguments.h \
+ src/core/Log.h \
+ src/core/Module.h \
+ src/core/LogParser.h \
+ src/core/Server.h \
+ src/core/Singleton.h \
+ src/core/Sleep.h \
+ src/core/zUrt.h \
  \
- src/modules/Joueur.h \
- src/modules/Admin.h \
- src/modules/Bonjour.h
+ src/modules/Player.h \
+ src/modules/Admin.h

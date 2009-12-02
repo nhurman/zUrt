@@ -11,8 +11,8 @@ template<typename T> class Singleton
 		}
 };
 
-/* Utilisation
-class uneClasse : public Singleton<uneClasse>
+/* Usage
+class someClass : public Singleton<someClass>
 {};
 */
 

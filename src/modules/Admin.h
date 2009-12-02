@@ -1,27 +1,27 @@
 #ifndef ADMIN_H
 #define ADMIN_H
 
-#include "../coeur/zUrt.h"
-#include "Joueur.h"
+#include "../core/zUrt.h"
+#include "Player.h"
 
-struct Admin_Commande
+struct Admin_Command
 {
-	QString nom;
+	QString name;
 	unsigned int minArgs;
-	QString syntaxe;
-	QString aide;
+	QString syntax;
+	QString help;
 };
 
-struct Admin_Niveau
+struct Admin_Level
 {
-	QString nom;
-	QList<Admin_Commande *> commandes;
+	QString name;
+	QList<Admin_Command *> commands;
 };
 
 struct Admin_Admin
 {
-	QString nom;
-	unsigned int niveau;
+	QString name;
+	unsigned int level;
 };
 
 class Module_Admin : public Module
@@ -30,25 +30,25 @@ class Module_Admin : public Module
 
 	public:
 		Module_Admin();
-		QString nom();
-		QStringList ecoute();
+		QString name();
+		QStringList listens();
 
 	public slots:
-		void evenement(QString type, Arguments args);
+		void event(QString type, Arguments args);
 		
 	protected:
-		Admin_Commande *getCommande(Arguments args);
-		unsigned int getNiveau(Module_Joueur *j, int joueur);
+		Admin_Command *getCommand(Arguments args);
+		unsigned int getLevel(Module_Player *p, int player);
 		
-		static Admin_Commande m_commandes[];
-		static unsigned int m_nombreCommandes;
+		static Admin_Command m_commands[];
+		static unsigned int m_numCommands;
 		
 	private:
-		QHash<unsigned int, Admin_Niveau> m_niveaux;
+		QHash<unsigned int, Admin_Level> m_levels;
 		QHash<QString, Admin_Admin> m_admins;
 		
-		void cmd_admintest(Module_Joueur *j, int joueur);
-		void cmd_readconfig(int joueur);
+		void cmd_admintest(Module_Player *p, int player);
+		void cmd_readconfig(int player);
 };
 
 #endif

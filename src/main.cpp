@@ -1,24 +1,23 @@
 #include <cstdlib>
 #include <QCoreApplication>
 #include <QSettings>
-#include "coeur/zUrt.h"
+#include "core/zUrt.h"
 
-#include "modules/Bonjour.h"
 #include "modules/Admin.h"
-#include "modules/Joueur.h"
+#include "modules/Player.h"
 
 int main(int argc, char *argv[])
 {
 	zUrt *bot = NULL;	
 	QCoreApplication app(argc, argv);
 	
-	Log::instance("coeur")->information("---------- Démarrage ----------");	
-	Log::instance("coeur")->donnees("\n\n\n");
+	Log::instance("core")->information("---------- Starting up ----------");	
+	Log::instance("core")->data("\n\n\n");
 	
 	bot = zUrt::instance();
-	bot->charger(new Module_Joueur);
-	bot->charger(new Module_Admin);
-	bot->demarrer();
+	bot->load(new Module_Player);
+	bot->load(new Module_Admin);
+	bot->run();
 	
 	return app.exec();
 }
