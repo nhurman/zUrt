@@ -2,26 +2,30 @@
 
 // Sorted commands list, see Admin.h for syntax.
 Admin_Command Module_Admin::m_commands[] = {
-	{	tr("admintest"), 0, "",
+	{	tr("admintest"), &Module_Admin::cmd_admintest, "",
+		0, "",
 		tr("Displays your admin level.")
 	},
-	{	tr("kick"), 1, tr("[^3name^7|^3id^7]"),
+	{	tr("kick"), &Module_Admin::cmd_generic, "kick",
+		1, tr("[^3name^7|^3id^7]"),
 		tr("Kicks a player from the server.")
 	},
-	{	tr("mute"), 1, tr("[^3name^7|^3id^7]"),
+	{	tr("mute"), &Module_Admin::cmd_generic, "mute",
+		1, tr("[^3name^7|^3id^7]"),
 		tr("Mutes a player.")
 	},
-	{	tr("readconfig"), 0, "",
+	{	tr("readconfig"), &Module_Admin::cmd_readconfig, "",
+		0, "",
 		tr("Reloads admins and levels.")
 	}
 };
 
 unsigned int Module_Admin::m_numCommands =
-	sizeof(Module_Admin::m_commands) / sizeof(Admin_Command);
+	sizeof(m_commands) / sizeof(Admin_Command);
 
 Module_Admin::Module_Admin()
 {
-	cmd_readconfig(-1);
+	cmd_readconfig(NULL, -1, NULL, NULL);
 }
 
 QString Module_Admin::name()
@@ -70,22 +74,7 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 	}
 	
 	// Command execution
-	if(command->name == "admintest")
-		cmd_admintest(p, admin);
-	else if(command->name == "kick")
-	{
-		int player = p->matchOnePlayer(args.get(1), admin);
-		if(player != -1)
-			zUrt::instance()->server()->kick(player);
-	}
-	else if(command->name == "mute")
-	{
-		int player = p->matchOnePlayer(args.get(1), admin);
-		if(player != -1)
-			zUrt::instance()->server()->mute(player);
-	}
-	else if(command->name == "readconfig")
-		cmd_readconfig(admin);
+	(*this.*command->handler)(p, admin, &args, command);
 }
 
 Admin_Command *Module_Admin::getCommand(Arguments args)
@@ -115,19 +104,33 @@ unsigned int Module_Admin::getLevel(Module_Player *p, int player)
 // COMMANDS //
 //////////////
 
-void Module_Admin::cmd_admintest(Module_Player *p, int player)
+void Module_Admin::cmd_generic(Module_Player *p, int player, Arguments *args, Admin_Command *command)
 {
-	unsigned int level = getLevel(p, player);
+	if(command->minArgs == 0)
+		zUrt::instance()->server()->rcon(command->serverCmd);
+	else if(command->minArgs == 1)
+	{
+		
+		int target = p->matchOnePlayer(args->get(1), player);
+		if(target != -1)
+			zUrt::instance()->server()->rcon(command->serverCmd + " "
+				+ QString::number(target));
+	}
+}
+
+void Module_Admin::cmd_admintest(Module_Player *p, int player, Arguments */*args*/, Admin_Command */*command*/)
+{
+	unsigned int level = Module_Admin::getLevel(p, player);
 	
 	zUrt::instance()->server()->say(
-		tr("^3!admintest^7 : %1^7 is a %2^7 (level %3).")
+		tr("^3!admintest^7: %1^7 is a %2^7 (level %3).")
 		.arg(p->get(player, "name"))
 		.arg(m_levels[level].name)
 		.arg(level)
 	);
 }
 
-void Module_Admin::cmd_readconfig(int player)
+void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */*args*/, Admin_Command */*command*/)
 {
 	QSettings *config = NULL;
 	
@@ -173,7 +176,7 @@ void Module_Admin::cmd_readconfig(int player)
 	}
 	
 	QString out =
-		tr("^3!readconfig^7 : %1 levels", "", m_levels.size())
+		tr("^3!readconfig^7: %1 levels", "", m_levels.size())
 			.arg(m_levels.size())
 		+ " " + tr("and %2 admins loaded.", "", m_admins.size())
 			.arg(m_admins.size());

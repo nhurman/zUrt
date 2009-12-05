@@ -4,25 +4,9 @@
 #include "../core/zUrt.h"
 #include "Player.h"
 
-struct Admin_Command
-{
-	QString name;
-	unsigned int minArgs;
-	QString syntax;
-	QString help;
-};
-
-struct Admin_Level
-{
-	QString name;
-	QList<Admin_Command *> commands;
-};
-
-struct Admin_Admin
-{
-	QString name;
-	unsigned int level;
-};
+struct Admin_Admin;
+struct Admin_Command;
+struct Admin_Level;
 
 class Module_Admin : public Module
 {
@@ -47,8 +31,30 @@ class Module_Admin : public Module
 		QHash<unsigned int, Admin_Level> m_levels;
 		QHash<QString, Admin_Admin> m_admins;
 		
-		void cmd_admintest(Module_Player *p, int player);
-		void cmd_readconfig(int player);
+		void cmd_generic(Module_Player *p, int player, Arguments *args, Admin_Command *command);
+		void cmd_admintest(Module_Player *p, int player, Arguments *args, Admin_Command *command);
+		void cmd_readconfig(Module_Player *p, int player, Arguments *args, Admin_Command *command);
+};
+
+struct Admin_Admin
+{
+	QString name;
+	unsigned int level;
+};		
+struct Admin_Command
+{
+	QString name;
+	void (Module_Admin::*handler)(Module_Player*, int, Arguments*, Admin_Command*);
+	QString serverCmd;
+	unsigned int minArgs;
+	QString syntax;
+	QString help;
+};
+
+struct Admin_Level
+{
+	QString name;
+	QList<Admin_Command *> commands;
 };
 
 #endif

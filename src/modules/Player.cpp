@@ -81,7 +81,7 @@ int Module_Player::matchOnePlayer(QString needle, int admin)
 	else
 	{
 		// Several matches, display id => name list.
-		QString out = tr("Several players found, please use ID : ");
+		QString out = tr("Several players found, please use ID: ");
 		for(int i = 0, j = list.size(); i < j; i++)
 			out += tr("%1 => %2^7, ", "id => name player list")
 				.arg(list[i])
