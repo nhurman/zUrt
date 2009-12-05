@@ -56,7 +56,7 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 	if(!m_levels[level].commands.contains(command))
 	{
 		zUrt::instance()->server()->tell(admin,
-			tr("^3!%1^7 : Access denied.")
+			tr("^3!%1^7: Access denied.")
 			.arg(command->name)
 		);
 		return;
@@ -66,7 +66,7 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 	if(args.size() <= command->minArgs)
 	{
 		zUrt::instance()->server()->tell(admin,
-			tr("Syntax : ^3!%1^7 %2")
+			tr("Syntax: ^3!%1^7 %2")
 			.arg(command->name)
 			.arg(command->syntax)
 		);
@@ -176,10 +176,8 @@ void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */
 	}
 	
 	QString out =
-		tr("^3!readconfig^7: %1 levels", "", m_levels.size())
-			.arg(m_levels.size())
-		+ " " + tr("and %2 admins loaded.", "", m_admins.size())
-			.arg(m_admins.size());
+		tr("^3!readconfig^7: %n levels", "", m_levels.size())
+		+ " " + tr("and %n admins loaded.", "", m_admins.size());
 	
 	if(player == -1)
 		Log::instance("admin")->information(out);

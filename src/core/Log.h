@@ -3,10 +3,10 @@
 
 #include <QFile>
 #include <QTextStream>
-#include <QString>
 #include <QDate>
 #include <QTime>
 #include <QHash>
+#include <QRegExp>
 
 class Log : public QObject
 {
@@ -17,6 +17,7 @@ class Log : public QObject
 		void information(QString information);
 		void error(QString error);
 		void data(QString data);
+		static QString decolorise(QString str);
 	
 	private:
 		QFile *m_file;

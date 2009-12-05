@@ -13,12 +13,12 @@ int main(int argc, char *argv[])
 	
 	QTranslator *translator = new QTranslator;
 	QSettings *settings = new QSettings("config/zurt.cfg", QSettings::IniFormat);
-	translator->load("ui/" + settings->value("ui/locale").toString());
+	translator->load("locales/" + settings->value("ui/locale").toString());
 	app.installTranslator(translator);
 	delete settings;
 	
-	Log::instance("core")->information("---------- Starting up ----------");	
 	Log::instance("core")->data("\n\n\n");
+	Log::instance("core")->information(QObject::tr("---------- Starting up ----------"));
 	
 	bot = zUrt::instance();
 	bot->load(new Module_Player);

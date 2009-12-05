@@ -2,10 +2,23 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="fr_FR" sourcelanguage="en">
 <context>
+    <name></name>
+    <message>
+        <location filename="../src/main.cpp" line="21"/>
+        <source>---------- Starting up ----------</source>
+        <translation>---------- Démarrage ----------</translation>
+    </message>
+</context>
+<context>
     <name>Log</name>
     <message>
+        <location filename="../src/core/Log.cpp" line="25"/>
+        <source>[%1 %2] %3 : %4</source>
+        <translation>[%1 %2] %3 : %4</translation>
+    </message>
+    <message>
         <location filename="../src/core/Log.cpp" line="26"/>
-        <source>dd/MM/yy</source>
+        <source>MM/dd/yy</source>
         <translation>dd/MM/yy</translation>
     </message>
     <message>
@@ -16,13 +29,11 @@
     <message>
         <location filename="../src/core/Log.cpp" line="35"/>
         <source>Information</source>
-        <comment>From log</comment>
         <translation>Information</translation>
     </message>
     <message>
         <location filename="../src/core/Log.cpp" line="40"/>
         <source>Error</source>
-        <comment>From log</comment>
         <translation>Erreur</translation>
     </message>
 </context>
@@ -80,7 +91,7 @@
     <message>
         <location filename="../src/modules/Admin.cpp" line="19"/>
         <source>Reloads admins and levels.</source>
-        <translation>Recharge els administrateurs et les niveaux.</translation>
+        <translation>Recharge les administrateurs et les niveaux.</translation>
     </message>
     <message>
         <location filename="../src/modules/Admin.cpp" line="59"/>
@@ -99,18 +110,18 @@
     </message>
     <message numerus="yes">
         <location filename="../src/modules/Admin.cpp" line="179"/>
-        <source>^3!readconfig^7: %1 levels</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <source>^3!readconfig^7: %n levels</source>
+        <translation>
+            <numerusform>^3!readconfig^7 : %n niveau</numerusform>
+            <numerusform>^3!readconfig^7 : %n niveaux</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/modules/Admin.cpp" line="181"/>
-        <source>and %2 admins loaded.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <source>and %n admins loaded.</source>
+        <translation>
+            <numerusform>et %n admin charge.</numerusform>
+            <numerusform>et %n admins charges.</numerusform>
         </translation>
     </message>
 </context>
@@ -124,22 +135,14 @@
     </message>
     <message>
         <location filename="../src/modules/Player.cpp" line="84"/>
-        <source>Several players found, please use ID: </source>
+        <source>Several players found, please use ID:</source>
         <translation>Plusieurs joueurs trouves, utilisez l&apos;ID :</translation>
     </message>
     <message>
         <location filename="../src/modules/Player.cpp" line="86"/>
-        <source>%1 =&gt; %2^7, </source>
+        <source> %1 =&gt; %2^7, </source>
         <comment>id =&gt; name player list</comment>
-        <translation>%1 =&gt; %2^7</translation>
-    </message>
-</context>
-<context>
-    <name>QObject</name>
-    <message>
-        <location filename="../src/core/Log.cpp" line="25"/>
-        <source>[%1 %2] %3 : %4</source>
-        <translation>[%1 %2] %3 : %4</translation>
+        <translation> %1 =&gt; %2^7, </translation>
     </message>
 </context>
 <context>
