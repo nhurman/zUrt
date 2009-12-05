@@ -10,6 +10,8 @@
 
 class zUrt : public QObject, public Singleton<zUrt>
 {
+	Q_OBJECT
+	
 	public:
 		zUrt();
 		void run();

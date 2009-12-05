@@ -8,6 +8,8 @@
 
 class Server : public QObject
 {
+	Q_OBJECT
+	
 	public:
 		Server(QString address, quint16 port, QString password);
 		QString rcon(QString command, bool reply = false);

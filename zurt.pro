@@ -1,6 +1,7 @@
 TEMPLATE = app
 QT = core network sql
 CONFIG += qt release warn_on console
+TRANSLATIONS = locales/fr_FR.ts
 DESTDIR = build/bin
 OBJECTS_DIR = build/obj
 MOC_DIR = build/moc

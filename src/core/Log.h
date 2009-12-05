@@ -10,6 +10,8 @@
 
 class Log : public QObject
 {
+	Q_OBJECT
+	
 	public:
 		static Log *instance(QString nom);
 		void information(QString information);

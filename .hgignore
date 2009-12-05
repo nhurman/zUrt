@@ -2,3 +2,4 @@ syntax: glob
 build/*
 .qdevelop
 Makefile
+locales/*.qm

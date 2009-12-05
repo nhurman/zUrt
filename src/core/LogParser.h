@@ -7,6 +7,8 @@
 
 class LogParser : public QObject
 {
+	Q_OBJECT
+	
 	public:
 		LogParser();
 		void readFile();
