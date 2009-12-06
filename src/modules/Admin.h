@@ -23,6 +23,7 @@ class Module_Admin : public Module
 	protected:
 		Admin_Command *getCommand(Arguments args);
 		unsigned int getLevel(Module_Player *p, int player);
+		bool adminHigher(Module_Player *p, unsigned int a, unsigned int b);
 		
 		static Admin_Command m_commands[];
 		static unsigned int m_numCommands;
@@ -34,6 +35,7 @@ class Module_Admin : public Module
 		void cmd_generic(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_admintest(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_readconfig(Module_Player *p, int player, Arguments *args, Admin_Command *command);
+		void cmd_setlevel(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 };
 
 struct Admin_Admin

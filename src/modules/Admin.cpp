@@ -17,6 +17,10 @@ Admin_Command Module_Admin::m_commands[] = {
 	{	tr("readconfig"), &Module_Admin::cmd_readconfig, "",
 		0, "",
 		tr("Reloads admins and levels.")
+	},
+	{	tr("setlevel"), &Module_Admin::cmd_setlevel, "",
+		2, tr("[^3name^7|^3id^7] [^3level^7]"),
+		tr("Sets a player's admin level.")
 	}
 };
 
@@ -100,6 +104,11 @@ unsigned int Module_Admin::getLevel(Module_Player *p, int player)
 	return level;
 }
 
+bool Module_Admin::adminHigher(Module_Player *p, unsigned int a, unsigned int b)
+{
+	return getLevel(p, a) >= getLevel(p, b);
+}
+
 //////////////
 // COMMANDS //
 //////////////
@@ -110,7 +119,6 @@ void Module_Admin::cmd_generic(Module_Player *p, int player, Arguments *args, Ad
 		zUrt::instance()->server()->rcon(command->serverCmd);
 	else if(command->minArgs == 1)
 	{
-		
 		int target = p->matchOnePlayer(args->get(1), player);
 		if(target != -1)
 			zUrt::instance()->server()->rcon(command->serverCmd + " "
@@ -120,7 +128,7 @@ void Module_Admin::cmd_generic(Module_Player *p, int player, Arguments *args, Ad
 
 void Module_Admin::cmd_admintest(Module_Player *p, int player, Arguments */*args*/, Admin_Command */*command*/)
 {
-	unsigned int level = Module_Admin::getLevel(p, player);
+	unsigned int level = getLevel(p, player);
 	
 	zUrt::instance()->server()->say(
 		tr("^3!admintest^7: %1^7 is a %2^7 (level %3).")
@@ -183,4 +191,59 @@ void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */
 		Log::instance("admin")->information(out);
 	else
 		zUrt::instance()->server()->tell(player, out);
+		
+	// No admins declared, give setlevel to everyone
+	if(m_admins.size() == 0)
+	{
+		QStringList cmd = QStringList() << "!setlevel";
+		m_levels[0].commands.append(getCommand(Arguments(cmd)));
+	}
+}
+
+void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, Admin_Command */*command*/)
+{
+	int target = p->matchOnePlayer(args->get(1), player);
+	if(target == -1)
+		return;
+	
+	if(!adminHigher(p, player, target))
+	{
+		zUrt::instance()->server()->tell(player,
+			tr("^3!setlevel^7: Your target has a higher admin level than you.")
+		);
+		return;
+	}
+		
+	unsigned int level = args->get(2).toInt();
+	if(!m_levels.contains(level))
+	{
+		zUrt::instance()->server()->tell(player,
+			tr("^3!setlevel^7: No such level.")
+		);
+		return;
+	}
+	
+	QSettings *config = new QSettings("config/admins.cfg", QSettings::IniFormat);
+	config->beginGroup(p->get(target, "cl_guid"));
+	
+	if(level == 0)
+		config->remove("");
+	else
+	{
+		config->setValue("name", p->get(target, "name"));
+		config->setValue("level", level);
+	}
+	
+	config->endGroup();
+	config->sync();
+	delete config;
+	
+	cmd_readconfig(NULL, -1, NULL, NULL);
+	
+	zUrt::instance()->server()->say(
+		tr("^3!setlevel^7: %1^7 was given %2^7 admin rights by %3^7.")
+		.arg(p->get(target, "name"))
+		.arg(m_levels[level].name)
+		.arg(p->get(player, "name"))
+	);
 }
