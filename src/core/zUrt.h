@@ -21,7 +21,7 @@ class zUrt : public QObject, public Singleton<zUrt>
 		Module *module(QString name);
 		void event(QString type, QStringList parameters);
 	
-	protected:
+	private:
 		QHash<QString, Module*> m_modules;
 		QSettings *m_settings;
 		Server *m_server;

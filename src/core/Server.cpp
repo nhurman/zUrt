@@ -1,10 +1,11 @@
 #include "Server.h"
 
-Server::Server(QString address, quint16 port, QString password)
+Server::Server(QString address, quint16 port, QString password, QString path)
 {
 	m_address = new QHostAddress(address);
 	m_port = port;
 	m_rcon = password;
+	m_path = path;
 	m_socket = new QUdpSocket(this);
 	m_socket->bind(0);
 	m_connected = true;
@@ -32,11 +33,9 @@ QString Server::rcon(QString command, bool reply)
 
 	m_socket->writeDatagram(query.toStdString().c_str(), *m_address, m_port);
 	m_interval.start();
-	if(!reply)
-		return "";
 	
 	m_socket->waitForReadyRead(500);
-	if(!m_socket->hasPendingDatagrams())
+	if(reply && !m_socket->hasPendingDatagrams())
 	{
 		m_connected = false;
 		Log::instance("core")->error(
@@ -50,7 +49,6 @@ QString Server::rcon(QString command, bool reply)
 	QByteArray datagram;
 	datagram.resize(m_socket->pendingDatagramSize());
 	m_socket->readDatagram(datagram.data(), datagram.size());
-	
 	QString out = QString(datagram);
 	if(out.left(header.size()) != header)
 		return "";
@@ -73,27 +71,65 @@ void Server::tell(int id, QString str)
 	rcon("tell " + QString::number(id) + "\"^7" + clean(str) + "\"");
 }
 
-void Server::kick(int id)
-{
-	rcon("kick " + QString::number(id));
-}
-
-void Server::mute(int id)
-{
-	rcon("mute " + QString::number(id));
-}
-
 void Server::set(QString var, QString value)
 {
 	rcon("seta " + var + " \"" + clean(value) + "\"");
 }
 
-void Server::reload()
+QString Server::get(QString var)
 {
-	rcon("reload");
+	QString data = rcon(var, true);
+	QString before = "print\n\"" + var + "\" is:\"";
+	data = data.right(data.length() -before.length());
+	data = data.left(data.indexOf('"'));
+	return Log::decolorise(data).trimmed();
 }
 
 bool Server::connected()
 {
 	return m_connected;
+}
+
+QStringList Server::maps()
+{	
+	QString home = get("fs_homepath");
+	QString base = get("fs_basepath");
+	QStringList
+		paks = QStringList(),
+		pakNames = get("sv_referencedPakNames").split(' ');
+	unsigned int i, j, k, l;
+	
+	home = (home[0] == '/' ? home : m_path + '/' + home) + '/';
+	base = (base[0] == '/' ? base : m_path + '/' + base) + '/';
+	
+	for(i = 0, j = pakNames.length(); i < j; i++)
+	{
+		QString file = pakNames[i] + ".pk3";
+		if(QFile::exists(home + file))
+			paks << home + file;
+		if(QFile::exists(base + file))
+			paks << base + file;
+	}
+	
+	ZipFile *zip;
+	QStringList mapList, files, parts, parts2;
+	QString folder;
+	for(i = 0, j = paks.length(); i < j; i++)
+	{
+		zip = new ZipFile(paks[i]);
+		files = zip->listFiles();
+		for(k = 0, l = files.size(); k < l; k++)
+		{
+			parts = files[k].split('/');
+			folder = parts.first();
+			if(folder == "maps")
+			{
+				parts2 = parts.last().split('.');
+				if(parts2.last().toLower() == "bsp")
+					mapList << parts2.first();
+			}
+		}
+		delete zip;
+	}
+	return mapList;
 }

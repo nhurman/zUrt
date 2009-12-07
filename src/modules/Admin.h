@@ -1,5 +1,5 @@
-#ifndef ADMIN_H
-#define ADMIN_H
+#ifndef __ADMIN_H__
+#define __ADMIN_H__
 
 #include "../core/zUrt.h"
 #include "Player.h"
@@ -25,12 +25,11 @@ class Module_Admin : public Module
 		unsigned int getLevel(Module_Player *p, int player);
 		bool adminHigher(Module_Player *p, unsigned int a, unsigned int b);
 		
-		static Admin_Command m_commands[];
-		static unsigned int m_numCommands;
-		
 	private:
 		QHash<unsigned int, Admin_Level> m_levels;
 		QHash<QString, Admin_Admin> m_admins;
+		static Admin_Command m_commands[];
+		static unsigned int m_numCommands;
 		
 		void cmd_generic(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_admintest(Module_Player *p, int player, Arguments *args, Admin_Command *command);

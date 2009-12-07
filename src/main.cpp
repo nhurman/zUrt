@@ -1,8 +1,8 @@
 #include <cstdlib>
 #include <QCoreApplication>
 #include <QSettings>
-#include "core/zUrt.h"
 
+#include "core/zUrt.h"
 #include "modules/Admin.h"
 #include "modules/Player.h"
 

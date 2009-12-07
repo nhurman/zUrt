@@ -178,12 +178,12 @@
 <context>
     <name>Server</name>
     <message>
-        <location filename="../src/core/Server.cpp" line="17"/>
+        <location filename="../src/core/Server.cpp" line="18"/>
         <source>Connected to %1 on port %2.</source>
         <translation>Connecté à %1 sur le port %2.</translation>
     </message>
     <message>
-        <location filename="../src/core/Server.cpp" line="43"/>
+        <location filename="../src/core/Server.cpp" line="42"/>
         <source>Could not connect to %1 on port %2.</source>
         <translation>Connexion impossible à %1 sur le port %2.</translation>
     </message>
@@ -191,13 +191,13 @@
 <context>
     <name>zUrt</name>
     <message>
-        <location filename="../src/core/zUrt.cpp" line="11"/>
+        <location filename="../src/core/zUrt.cpp" line="12"/>
         <source>Hi everyone !</source>
         <comment>Bot greeting when it connects</comment>
         <translation>Salut tout le monde !</translation>
     </message>
     <message>
-        <location filename="../src/core/zUrt.cpp" line="44"/>
+        <location filename="../src/core/zUrt.cpp" line="45"/>
         <source>Loading %1 module.</source>
         <translation>Chargement du module %1.</translation>
     </message>

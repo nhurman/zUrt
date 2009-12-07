@@ -6,7 +6,8 @@ zUrt::zUrt()
 	m_server = new Server(
 		m_settings->value("server/ip").toString(),
 		m_settings->value("server/port").value<quint16>(),
-		m_settings->value("server/rcon").toString()
+		m_settings->value("server/rcon").toString(),
+		m_settings->value("server/path").toString()
 	);
 	m_server->say(tr("Hi everyone !", "Bot greeting when it connects"));
 }
