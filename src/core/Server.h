@@ -3,6 +3,7 @@
 
 #include <QtNetwork>
 #include <QTime>
+#include <QFileInfo>
 #include "Log.h"
 #include "Sleep.h"
 #include "ZipFile.h"
@@ -10,7 +11,7 @@
 class Server : public QObject
 {
 	Q_OBJECT
-	
+
 	public:
 		Server(QString address, quint16 port, QString password, QString path);
 		QString rcon(QString command, bool reply = false);
@@ -20,15 +21,15 @@ class Server : public QObject
 		QString get(QString var);
 		QStringList maps();
 		bool connected();
-		
+
 		static QString clean(QString str);
-	
+
 	protected:
 		QHostAddress *m_address;
 		quint16 m_port;
 		QString m_rcon;
 		QString m_path;
-	
+
 	private:
 		QUdpSocket *m_socket;
 		bool m_connected;

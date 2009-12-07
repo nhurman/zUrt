@@ -9,9 +9,9 @@ Server::Server(QString address, quint16 port, QString password, QString path)
 	m_socket = new QUdpSocket(this);
 	m_socket->bind(0);
 	m_connected = true;
-	
+
 	m_interval.addSecs(10);
-	
+
 	rcon("status", true);
 	set("g_logSync", "1");
 	Log::instance("core")->information(
@@ -33,7 +33,7 @@ QString Server::rcon(QString command, bool reply)
 
 	m_socket->writeDatagram(query.toStdString().c_str(), *m_address, m_port);
 	m_interval.start();
-	
+
 	m_socket->waitForReadyRead(500);
 	if(reply && !m_socket->hasPendingDatagrams())
 	{
@@ -45,14 +45,14 @@ QString Server::rcon(QString command, bool reply)
 		);
 		exit(0);
 	}
-	
+
 	QByteArray datagram;
 	datagram.resize(m_socket->pendingDatagramSize());
 	m_socket->readDatagram(datagram.data(), datagram.size());
 	QString out = QString(datagram);
 	if(out.left(header.size()) != header)
 		return "";
-	
+
 	return out.right(out.size() - header.size());
 }
 
@@ -91,17 +91,17 @@ bool Server::connected()
 }
 
 QStringList Server::maps()
-{	
+{
 	QString home = get("fs_homepath");
 	QString base = get("fs_basepath");
 	QStringList
 		paks = QStringList(),
 		pakNames = get("sv_referencedPakNames").split(' ');
 	unsigned int i, j, k, l;
-	
-	home = (home[0] == '/' ? home : m_path + '/' + home) + '/';
-	base = (base[0] == '/' ? base : m_path + '/' + base) + '/';
-	
+
+	home = (QFileInfo(home).isAbsolute() ? home : m_path + '/' + home) + '/';
+	base = (QFileInfo(base).isAbsolute() ? base : m_path + '/' + base) + '/';
+
 	for(i = 0, j = pakNames.length(); i < j; i++)
 	{
 		QString file = pakNames[i] + ".pk3";
@@ -110,7 +110,7 @@ QStringList Server::maps()
 		if(QFile::exists(base + file))
 			paks << base + file;
 	}
-	
+
 	ZipFile *zip;
 	QStringList mapList, files, parts, parts2;
 	QString folder;
