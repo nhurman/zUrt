@@ -6,6 +6,7 @@ Server::Server(QString address, quint16 port, QString password, QString path)
 	m_port = port;
 	m_rcon = password;
 	m_path = path;
+	m_maps = QStringList();
 	m_socket = new QUdpSocket(this);
 	m_socket->bind(0);
 	m_connected = true;
@@ -19,6 +20,7 @@ Server::Server(QString address, quint16 port, QString password, QString path)
 		.arg(m_address->toString())
 		.arg(m_port)
 	);
+	loadMaps();
 }
 
 QString Server::rcon(QString command, bool reply)
@@ -71,6 +73,11 @@ void Server::tell(int id, QString str)
 	rcon("tell " + QString::number(id) + "\"^7" + clean(str) + "\"");
 }
 
+void Server::map(QString name)
+{
+	rcon("map " + name);
+}
+
 void Server::set(QString var, QString value)
 {
 	rcon("seta " + var + " \"" + clean(value) + "\"");
@@ -92,16 +99,21 @@ bool Server::connected()
 
 QStringList Server::maps()
 {
+	return m_maps;
+}
+
+void Server::loadMaps()
+{
 	QString home = get("fs_homepath");
 	QString base = get("fs_basepath");
 	QStringList
 		paks = QStringList(),
 		pakNames = get("sv_referencedPakNames").split(' ');
 	unsigned int i, j, k, l;
-
+	
 	home = (QFileInfo(home).isAbsolute() ? home : m_path + '/' + home) + '/';
 	base = (QFileInfo(base).isAbsolute() ? base : m_path + '/' + base) + '/';
-
+	
 	for(i = 0, j = pakNames.length(); i < j; i++)
 	{
 		QString file = pakNames[i] + ".pk3";
@@ -110,9 +122,9 @@ QStringList Server::maps()
 		if(QFile::exists(base + file))
 			paks << base + file;
 	}
-
-	ZipFile *zip;
-	QStringList mapList, files, parts, parts2;
+		ZipFile *zip;
+	QStringList files, parts, parts2;
+	m_maps = QStringList();
 	QString folder;
 	for(i = 0, j = paks.length(); i < j; i++)
 	{
@@ -126,10 +138,9 @@ QStringList Server::maps()
 			{
 				parts2 = parts.last().split('.');
 				if(parts2.last().toLower() == "bsp")
-					mapList << parts2.first();
+					m_maps << parts2.first();
 			}
 		}
 		delete zip;
 	}
-	return mapList;
 }

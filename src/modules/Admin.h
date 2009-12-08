@@ -19,11 +19,12 @@ class Module_Admin : public Module
 
 	public slots:
 		void event(QString type, Arguments args);
-		
+
 	protected:
 		Admin_Command *getCommand(Arguments args);
 		unsigned int getLevel(Module_Player *p, int player);
 		bool adminHigher(Module_Player *p, unsigned int a, unsigned int b);
+		QString matchOneMap(QString map, int admin = -1);
 		
 	private:
 		QHash<unsigned int, Admin_Level> m_levels;
@@ -33,6 +34,7 @@ class Module_Admin : public Module
 		
 		void cmd_generic(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_admintest(Module_Player *p, int player, Arguments *args, Admin_Command *command);
+		void cmd_map(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_readconfig(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_setlevel(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 };

@@ -51,95 +51,146 @@
     </message>
     <message>
         <location filename="../src/modules/Admin.cpp" line="9"/>
+        <source>cyclemap</source>
+        <translation>cyclemap</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="13"/>
         <source>kick</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="10"/>
         <location filename="../src/modules/Admin.cpp" line="14"/>
+        <location filename="../src/modules/Admin.cpp" line="26"/>
         <source>[^3name^7|^3id^7]</source>
         <translation>[^3nom^7|^3id^7]</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="11"/>
+        <location filename="../src/modules/Admin.cpp" line="15"/>
         <source>Kicks a player from the server.</source>
         <translation>Ejecte un joueur du serveur.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="13"/>
+        <location filename="../src/modules/Admin.cpp" line="17"/>
+        <source>map</source>
+        <translation>map</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="18"/>
+        <location filename="../src/modules/Admin.cpp" line="22"/>
+        <source>[^3name^7]</source>
+        <translation>[^3nom^7]</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="11"/>
+        <source>Loads next map.</source>
+        <translation>Charge la carte suivante.</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="19"/>
+        <source>Loads a map.</source>
+        <translation>Charge une carte.</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="21"/>
+        <source>nextmap</source>
+        <translation>nextmap</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="23"/>
+        <source>Changes next map.</source>
+        <translation>Change la carte suivante.</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="25"/>
         <source>mute</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="15"/>
+        <location filename="../src/modules/Admin.cpp" line="27"/>
         <source>Mutes a player.</source>
         <translation>Rend un joueur muet.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="17"/>
+        <location filename="../src/modules/Admin.cpp" line="29"/>
         <source>readconfig</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="19"/>
+        <location filename="../src/modules/Admin.cpp" line="31"/>
         <source>Reloads admins and levels.</source>
         <translation>Recharge les administrateurs et les niveaux.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="21"/>
+        <location filename="../src/modules/Admin.cpp" line="33"/>
         <source>setlevel</source>
         <translation>setlevel</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="22"/>
+        <location filename="../src/modules/Admin.cpp" line="34"/>
         <source>[^3name^7|^3id^7] [^3level^7]</source>
         <translation>[^3nom^7|^3id^7] [^3niveau^7]</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="23"/>
+        <location filename="../src/modules/Admin.cpp" line="35"/>
         <source>Sets a player&apos;s admin level.</source>
         <translation>Change le niveau d&apos;admin d&apos;un joueur.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="63"/>
+        <location filename="../src/modules/Admin.cpp" line="75"/>
         <source>^3!%1^7: Access denied.</source>
         <translation>^3!%1^7 : Acces refuse.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="73"/>
+        <location filename="../src/modules/Admin.cpp" line="85"/>
         <source>Syntax: ^3!%1^7 %2</source>
         <translation>Syntaxe : ^3!%1^7 %2</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="212"/>
-        <source>^3!setlevel^7: Your target has a higher admin level than you.</source>
-        <translation>^3!setlevel^7 : Votre cible a un niveau d&apos;admin plus eleve que le votre.</translation>
+        <location filename="../src/modules/Admin.cpp" line="136"/>
+        <source>No map found.</source>
+        <translation>Aucune carte touvee.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="221"/>
-        <source>^3!setlevel^7: No such level.</source>
-        <translation>^3!setlevel^7 : Ce niveau n&apos;existe pas.</translation>
+        <location filename="../src/modules/Admin.cpp" line="143"/>
+        <source>Several maps found, please be more precise:</source>
+        <translation>Plusieurs cartes trouvees, soyez plus precis :</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="244"/>
-        <source>^3!setlevel^7: %1^7 was given %2^7 admin rights by %3^7.</source>
-        <translation>^3!setlevel^7 : %3^7 a donne les droits de %2^7 a %1^7.</translation>
+        <location filename="../src/modules/Admin.cpp" line="145"/>
+        <source> %1,</source>
+        <translation> %1,</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="134"/>
-        <source>^3!admintest^7: %1^7 is a %2^7 (level %3).</source>
-        <translation>^3!admintest^7: %1^7 est un  %2^7 (niveau %3).</translation>
+        <location filename="../src/modules/Admin.cpp" line="176"/>
+        <source>^3!%1^7: %2^7 is a %3^7 (level %4).</source>
+        <translation>^3!%1^7 : %2^7 est un %3^7 (niveau %4).</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/modules/Admin.cpp" line="187"/>
-        <source>^3!readconfig^7: %n levels</source>
+        <location filename="../src/modules/Admin.cpp" line="242"/>
+        <source>^3!%1^7: %n levels</source>
         <translation>
-            <numerusform>^3!readconfig^7 : %n niveau</numerusform>
-            <numerusform>^3!readconfig^7 : %n niveaux</numerusform>
+            <numerusform>^3!%1^7 : %n niveau</numerusform>
+            <numerusform>^3!%1^7 : %n niveaux</numerusform>
         </translation>
     </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="268"/>
+        <source>^3!%1^7: Your target has a higher admin level than you.</source>
+        <translation>^3!%1^7 : Votre cible a un niveau d&apos;admin plus eleve que le votre.</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="278"/>
+        <source>^3!%1^7: No such level.</source>
+        <translation>^3!%1^7 : Ce niveau n&apos;existe pas.</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="302"/>
+        <source>^3!%1^7: %2^7 was given %3^7 admin rights by %4^7.</source>
+        <translation>^3!%1^7 : %4^7 a donne les droits de %3^7 a %2^7.</translation>
+    </message>
     <message numerus="yes">
-        <location filename="../src/modules/Admin.cpp" line="188"/>
+        <location filename="../src/modules/Admin.cpp" line="244"/>
         <source>and %n admins loaded.</source>
         <translation>
             <numerusform>et %n admin charge.</numerusform>
@@ -178,12 +229,12 @@
 <context>
     <name>Server</name>
     <message>
-        <location filename="../src/core/Server.cpp" line="18"/>
+        <location filename="../src/core/Server.cpp" line="19"/>
         <source>Connected to %1 on port %2.</source>
         <translation>Connecté à %1 sur le port %2.</translation>
     </message>
     <message>
-        <location filename="../src/core/Server.cpp" line="42"/>
+        <location filename="../src/core/Server.cpp" line="44"/>
         <source>Could not connect to %1 on port %2.</source>
         <translation>Connexion impossible à %1 sur le port %2.</translation>
     </message>
