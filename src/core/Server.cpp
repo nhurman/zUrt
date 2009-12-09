@@ -6,7 +6,6 @@ Server::Server(QString address, quint16 port, QString password, QString path)
 	m_port = port;
 	m_rcon = password;
 	m_path = path;
-	m_maps = QStringList();
 	m_socket = new QUdpSocket(this);
 	m_socket->bind(0);
 	m_connected = true;
@@ -65,12 +64,44 @@ QString Server::clean(QString str)
 
 void Server::say(QString str)
 {
-	rcon("say \"^7" + clean(str) + "\"");
+	str = clean(str).trimmed();
+	unsigned int size = str.size();
+	const unsigned int TRIM = 60;
+	if(size > TRIM)
+	{
+		int i, split = str.indexOf(' ', TRIM) - 1;
+		for(i = split; i >= 0; i++)
+			if(str[i] == ' ')
+				break;
+		if(i <= 0)
+			i = TRIM;
+		
+		rcon("say \"^7" + str.left(i) + "\"");
+		say(str.right(str.size() - i));
+	}
+	else
+		rcon("say \"^7" + clean(str) + "\"");
 }
 
 void Server::tell(int id, QString str)
 {
-	rcon("tell " + QString::number(id) + "\"^7" + clean(str) + "\"");
+	str = clean(str).trimmed();
+	unsigned int size = str.size();
+	const unsigned int TRIM = 52;
+	if(size > TRIM)
+	{
+		int i, split = str.indexOf(' ', TRIM) - 1;
+		for(i = split; i >= 0; i++)
+			if(str[i] == ' ')
+				break;
+		if(i <= 0)
+			i = TRIM;
+		
+		rcon("tell " + QString::number(id) + " \"^7" + str.left(i) + "\"");
+		tell(id, str.right(str.size() - i));
+	}
+	else
+		rcon("tell " + QString::number(id) + " \"^7" + str + "\"");
 }
 
 void Server::map(QString name)
@@ -122,7 +153,8 @@ void Server::loadMaps()
 		if(QFile::exists(base + file))
 			paks << base + file;
 	}
-		ZipFile *zip;
+	
+	ZipFile *zip;
 	QStringList files, parts, parts2;
 	m_maps = QStringList();
 	QString folder;

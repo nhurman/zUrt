@@ -10,20 +10,24 @@ Admin_Command Module_Admin::m_commands[] = {
 		0, "",
 		tr("Loads next map.")
 	},
-	{	tr("kick"), &Module_Admin::cmd_generic, "kick",
-		1, tr("[^3name^7|^3id^7]"),
+	{	tr("help"), &Module_Admin::cmd_help, "",
+		0, tr("(^5command^7)"),
+		tr("Lists available commands. Adding the command name gives specific help.")
+	},
+	{	tr("kick"), &Module_Admin::cmd_generic, "clientkick",
+		1, tr("[^5name^7|^5id^7]"),
 		tr("Kicks a player from the server.")
 	},
 	{	tr("map"), &Module_Admin::cmd_map, "",
-		1, tr("[^3name^7]"),
+		1, tr("[^5name^7]"),
 		tr("Loads a map.")
 	},
 	{	tr("nextmap"), &Module_Admin::cmd_map, "",
-		1, tr("[^3name^7]"),
+		1, tr("[^5name^7]"),
 		tr("Changes next map.")
 	},
 	{	tr("mute"), &Module_Admin::cmd_generic, "mute",
-		1, tr("[^3name^7|^3id^7]"),
+		1, tr("[^5name^7|^5id^7]"),
 		tr("Mutes a player.")
 	},
 	{	tr("readconfig"), &Module_Admin::cmd_readconfig, "",
@@ -31,8 +35,12 @@ Admin_Command Module_Admin::m_commands[] = {
 		tr("Reloads admins and levels.")
 	},
 	{	tr("setlevel"), &Module_Admin::cmd_setlevel, "",
-		2, tr("[^3name^7|^3id^7] [^3level^7]"),
+		2, tr("[^5name^7|^5id^7] [^5level^7]"),
 		tr("Sets a player's admin level.")
+	},
+	{	tr("slap"), &Module_Admin::cmd_generic, "slap",
+		1, tr("[^5name^7|^5id^7]"),
+		tr("Slaps a player.")
 	}
 };
 
@@ -68,8 +76,7 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 		return;
 	
 	// Can the player use this command ?
-	unsigned int level = getLevel(p, admin);
-	if(!m_levels[level].commands.contains(command))
+	if(!commandPermitted(p, admin, command))
 	{
 		zUrt::instance()->server()->tell(admin,
 			tr("^3!%1^7: Access denied.")
@@ -93,9 +100,14 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 	(this->*command->handler)(p, admin, &args, command);
 }
 
-Admin_Command *Module_Admin::getCommand(Arguments args)
+bool Module_Admin::commandPermitted(Module_Player *p, unsigned int player, Admin_Command *command)
 {
-	QString name = args.get(0);
+	unsigned int level = getLevel(p, player);
+	return m_levels[level].commands.contains(command);
+}
+
+Admin_Command *Module_Admin::getCommand(QString name)
+{
 	if(name[0] != '!')
 		return NULL;
 	
@@ -105,6 +117,11 @@ Admin_Command *Module_Admin::getCommand(Arguments args)
 		if(m_commands[i].name == name)
 			command = &m_commands[i];
 	return command;
+}
+
+Admin_Command *Module_Admin::getCommand(Arguments args, unsigned int index)
+{
+	return getCommand(args.get(index));
 }
 
 unsigned int Module_Admin::getLevel(Module_Player *p, int player)
@@ -120,7 +137,7 @@ bool Module_Admin::adminHigher(Module_Player *p, unsigned int a, unsigned int b)
 {
 	return getLevel(p, a) >= getLevel(p, b);
 }
-#include <QtDebug>
+
 QString Module_Admin::matchOneMap(QString map, int admin)
 {
 	QStringList maps = zUrt::instance()->server()->maps().filter(map);
@@ -130,6 +147,7 @@ QString Module_Admin::matchOneMap(QString map, int admin)
 		if(!list.contains(maps[i]))
 			list.push_back(maps[i]);
 	}*/
+	
 	if(maps.isEmpty())
 	{
 		zUrt::instance()->server()->tell(admin,
@@ -145,7 +163,7 @@ QString Module_Admin::matchOneMap(QString map, int admin)
 			out += tr(" %1,")
 				.arg(maps[i]);
 		// Remove last comma
-		zUrt::instance()->server()->tell(admin, out.left(out.size() - 2));
+		zUrt::instance()->server()->tell(admin, out.left(out.size() - 1) + '.');
 	}
 	return "";
 }
@@ -181,6 +199,56 @@ void Module_Admin::cmd_admintest(Module_Player *p, int player, Arguments */*args
 	);
 }
 
+void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin_Command *command)
+{
+	if(args->size() == 1)
+	{
+		unsigned int num = 0;
+		QString out = "";
+		for(unsigned int i = 0; i < m_numCommands; i++)
+			if(commandPermitted(p, player, &m_commands[i]))
+			{
+				num++;
+				out += tr(" !%1,").arg(m_commands[i].name);
+			}
+		out = tr("^3!%1^7: %n commands available:", "", num)
+			.arg(command->name)
+			+ out;
+		zUrt::instance()->server()->tell(player, out.left(out.size() - 1) + '.');
+		return;
+	}
+	
+	QString name = args->get(1);
+	if(name[0] != '!')
+		name = '!' + name;
+	Admin_Command *help = getCommand(name);
+	if(!help)
+	{
+		zUrt::instance()->server()->tell(player,
+			tr("^3!%1^7: No such command.")
+			.arg(command->name)
+		);
+		return;
+	}
+	
+	if(!commandPermitted(p, player, help))
+	{
+		zUrt::instance()->server()->tell(player,
+			tr("^3!%1^7: Access to ^3!%2^7 denied.")
+			.arg(command->name)
+			.arg(help->name)
+		);
+		return;
+	}
+	
+	zUrt::instance()->server()->tell(player,
+		tr("Syntax: ^3!%1^7%2.")
+		.arg(help->name)
+		.arg(help->syntax != "" ? ' ' + help->syntax : "")
+	);
+	zUrt::instance()->server()->tell(player, help->help);
+}
+
 void Module_Admin::cmd_map(Module_Player */*p*/, int player, Arguments *args, Admin_Command *command)
 {
 	QString map = matchOneMap(args->get(1), player);
@@ -196,6 +264,7 @@ void Module_Admin::cmd_map(Module_Player */*p*/, int player, Arguments *args, Ad
 void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */*args*/, Admin_Command *command)
 {
 	QSettings *config = NULL;
+	QString name = command ? command->name : "readconfig";
 	
 	// Admin levels loading
 	{
@@ -240,13 +309,14 @@ void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */
 	
 	QString out =
 		tr("^3!%1^7: %n levels", "", m_levels.size())
-		.arg(command->name)
+		.arg(name)
 		+ " " + tr("and %n admins loaded.", "", m_admins.size());
 	
 	if(player == -1)
 		Log::instance("admin")->information(out);
 	else
 		zUrt::instance()->server()->tell(player, out);
+		
 		
 	// No admins declared, give setlevel to everyone
 	if(m_admins.size() == 0)

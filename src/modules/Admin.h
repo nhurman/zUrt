@@ -21,7 +21,9 @@ class Module_Admin : public Module
 		void event(QString type, Arguments args);
 
 	protected:
-		Admin_Command *getCommand(Arguments args);
+		bool commandPermitted(Module_Player *p, unsigned int player, Admin_Command *command);
+		Admin_Command *getCommand(QString name);
+		Admin_Command *getCommand(Arguments args, unsigned int index = 0);
 		unsigned int getLevel(Module_Player *p, int player);
 		bool adminHigher(Module_Player *p, unsigned int a, unsigned int b);
 		QString matchOneMap(QString map, int admin = -1);
@@ -34,6 +36,7 @@ class Module_Admin : public Module
 		
 		void cmd_generic(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_admintest(Module_Player *p, int player, Arguments *args, Admin_Command *command);
+		void cmd_help(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_map(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_readconfig(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_setlevel(Module_Player *p, int player, Arguments *args, Admin_Command *command);
@@ -48,7 +51,7 @@ struct Admin_Command
 {
 	QString name;
 	void (Module_Admin::*handler)(Module_Player*, int, Arguments*, Admin_Command*);
-	QString serverCmd;
+	QString serverCmd; // Only used with generic handler
 	unsigned int minArgs;
 	QString syntax;
 	QString help;

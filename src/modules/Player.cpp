@@ -83,11 +83,11 @@ int Module_Player::matchOnePlayer(QString needle, int admin)
 		// Several matches, display id => name list.
 		QString out = tr("Several players found, please use ID:");
 		for(int i = 0, j = list.size(); i < j; i++)
-			out += tr(" %1 => %2^7, ", "id => name player list")
+			out += tr(" %1 => %2^7,", "id => name player list")
 				.arg(list[i])
 				.arg(get(list[i], "name"));
 		// Remove last comma
-		zUrt::instance()->server()->tell(admin, out.left(out.size() - 2));
+		zUrt::instance()->server()->tell(admin, out.left(out.size() - 1) + '.');
 	}
 	return -1;
 }
