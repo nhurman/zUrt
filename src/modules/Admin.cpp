@@ -10,6 +10,10 @@ Admin_Command Module_Admin::m_commands[] = {
 		0, "",
 		tr("Loads next map.")
 	},
+	{	tr("forceteam"), &Module_Admin::cmd_forceteam, "",
+		2, tr("[^5name^7|^5id^7] [^5auto^7|^5blue^7|^5red^7|^5spec^7]"),
+		tr("Forces a player to join a team (team's first letter is enough)")
+	},
 	{	tr("help"), &Module_Admin::cmd_help, "",
 		0, tr("(^5command^7)"),
 		tr("Lists available commands. Adding the command name gives specific help.")
@@ -247,6 +251,36 @@ void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin
 		.arg(help->syntax != "" ? ' ' + help->syntax : "")
 	);
 	zUrt::instance()->server()->tell(player, help->help);
+}
+
+void Module_Admin::cmd_forceteam(Module_Player *p, int player, Arguments *args, Admin_Command *command)
+{
+	QChar letter = args->get(2).at(0);
+	QString team = "";
+	if(letter == 'b')
+		team = "blue";
+	else if(letter == 'r')
+		team = "red";
+	else if(letter == 'a')
+		team = "free";
+	else if(letter == 's')
+		team = "spectator";
+
+	if(team == "")
+	{
+		zUrt::instance()->server()->tell(player,
+			tr("^3!%1^7: Invalid team.")
+			.arg(command->name)
+		);
+	}
+	else
+	{
+		int target = p->matchOnePlayer(args->get(1), player);
+		if(target != -1)
+		{
+			zUrt::instance()->server()->forceteam(player, team);
+		}
+	}
 }
 
 void Module_Admin::cmd_map(Module_Player */*p*/, int player, Arguments *args, Admin_Command *command)

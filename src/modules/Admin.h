@@ -37,6 +37,7 @@ class Module_Admin : public Module
 		void cmd_generic(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_admintest(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_help(Module_Player *p, int player, Arguments *args, Admin_Command *command);
+		void cmd_forceteam(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_map(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_readconfig(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_setlevel(Module_Player *p, int player, Arguments *args, Admin_Command *command);

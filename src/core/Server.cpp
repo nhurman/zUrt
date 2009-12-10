@@ -109,6 +109,11 @@ void Server::map(QString name)
 	rcon("map " + name);
 }
 
+void Server::forceteam(int joueur, QString team)
+{
+	rcon("forceteam " + QString::number(joueur) + " " + team);
+}
+
 void Server::set(QString var, QString value)
 {
 	rcon("seta " + var + " \"" + clean(value) + "\"");

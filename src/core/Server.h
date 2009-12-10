@@ -18,6 +18,7 @@ class Server : public QObject
 		void say(QString texte);
 		void tell(int id, QString texte);
 		void map(QString name);
+		void forceteam(int joueur, QString team);
 		void set(QString var, QString value);
 		QString get(QString var);
 		QStringList maps();
