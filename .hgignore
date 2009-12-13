@@ -1,5 +1,6 @@
 syntax: glob
-build/*
 .qdevelop
 Makefile
+build/*
 locales/*.qm
+config/*.cfg

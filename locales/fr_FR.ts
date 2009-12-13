@@ -236,9 +236,10 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="312"/>
-        <source>^3!%1^7: No such command.</source>
-        <translation>^3!%1^7 : Cette commande n&apos;existe pas.</translation>
+        <location filename="../src/modules/Admin.cpp" line="353"/>
+        <location filename="../src/modules/Admin.cpp" line="527"/>
+        <source>^3!%1^7: Unknown level.</source>
+        <translation>^3!%1^7 : Ce niveau n&apos;existe pas.</translation>
     </message>
     <message>
         <location filename="../src/modules/Admin.cpp" line="321"/>
@@ -255,8 +256,27 @@
         <source>^3!%1^7: Invalid team.</source>
         <translation>^3!%1^7: Equipe inconnue.</translation>
     </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="392"/>
+        <source>%1^7:</source>
+        <comment>Level name</comment>
+        <translation>%1^7 :</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="396"/>
+        <source> %1^7(%2),</source>
+        <translation> %1^7(%2),</translation>
+    </message>
     <message numerus="yes">
-        <location filename="../src/modules/Admin.cpp" line="410"/>
+        <location filename="../src/modules/Admin.cpp" line="404"/>
+        <source>^3!%1^7: %n admins found.</source>
+        <translation>
+            <numerusform>^3!%1^7 : %n admin trouve.</numerusform>
+            <numerusform>^3!%1^7 : %n admins trouves.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/modules/Admin.cpp" line="473"/>
         <source>^3!%1^7: %n levels</source>
         <translation>
             <numerusform>^3!%1^7 : %n niveau</numerusform>
@@ -265,40 +285,27 @@
     </message>
     <message>
         <location filename="../src/modules/Admin.cpp" line="237"/>
-        <location filename="../src/modules/Admin.cpp" line="457"/>
+        <location filename="../src/modules/Admin.cpp" line="517"/>
         <source>^3!%1^7: Your target has a higher admin level than you.</source>
         <translation>^3!%1^7 : Votre cible a un niveau d&apos;admin plus eleve que le votre.</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../src/modules/Admin.cpp" line="338"/>
-        <source>^3!%1^7: There are %n admins:</source>
-        <translation>
-            <numerusform>^3!%1^7: Il y a %n admin :</numerusform>
-            <numerusform>^3!%1^7: Il y a %n admins :</numerusform>
-        </translation>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="312"/>
+        <source>^3!%1^7: Unknown command.</source>
+        <translation>^3!%1^7 : Cette commande n&apos;existe pas.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="341"/>
-        <source> %1(%2),</source>
-        <translation> %1(%2),</translation>
-    </message>
-    <message>
-        <location filename="../src/modules/Admin.cpp" line="467"/>
-        <source>^3!%1^7: No such level.</source>
-        <translation>^3!%1^7 : Ce niveau n&apos;existe pas.</translation>
-    </message>
-    <message>
-        <location filename="../src/modules/Admin.cpp" line="477"/>
+        <location filename="../src/modules/Admin.cpp" line="537"/>
         <source>^3!%1^7: You cannot setlevel higher than your own admin level (%1).</source>
         <translation>^3!%1^7: Vous ne pouvez pas augmenter votre niveau (%1).</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="509"/>
+        <location filename="../src/modules/Admin.cpp" line="569"/>
         <source>^3!%1^7: %2^7 was given %3^7 admin rights by %4^7.</source>
         <translation>^3!%1^7 : %4^7 a donne les droits de %3^7 a %2^7.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/modules/Admin.cpp" line="412"/>
+        <location filename="../src/modules/Admin.cpp" line="475"/>
         <source>and %n admins loaded.</source>
         <translation>
             <numerusform>et %n admin charge.</numerusform>
@@ -310,17 +317,17 @@
     <name>Module_Player</name>
     <message>
         <location filename="../src/modules/Player.cpp" line="59"/>
-        <location filename="../src/modules/Player.cpp" line="76"/>
+        <location filename="../src/modules/Player.cpp" line="77"/>
         <source>No players found.</source>
         <translation>Aucun joueur trouve.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Player.cpp" line="84"/>
+        <location filename="../src/modules/Player.cpp" line="85"/>
         <source>Several players found, please use ID:</source>
         <translation>Plusieurs joueurs trouves, utilisez l&apos;ID :</translation>
     </message>
     <message>
-        <location filename="../src/modules/Player.cpp" line="86"/>
+        <location filename="../src/modules/Player.cpp" line="87"/>
         <source> %1 =&gt; %2^7,</source>
         <comment>id =&gt; name player list</comment>
         <translation> %1 =&gt; %2^7,</translation>

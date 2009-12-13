@@ -60,13 +60,14 @@ int Module_Player::matchOnePlayer(QString needle, int admin)
 			);
 		return -1;
 	}
-		
+	needle = Log::decolorise(needle.toLower());
+	
 	QHashIterator<unsigned int, ConfigString> i(m_players);
 	while(i.hasNext())
 	{
 		i.next();
 		name = get(i.key(), "name");
-		if(name != "" && name.toLower().contains(needle.toLower()))
+		if(name != "" && Log::decolorise(name.toLower()).contains(needle))
 			list << i.key();
 	}
 	

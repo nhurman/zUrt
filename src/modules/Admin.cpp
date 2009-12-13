@@ -309,7 +309,7 @@ void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin
 	if(!help)
 	{
 		zUrt::instance()->server()->tell(player,
-			tr("^3!%1^7: No such command.")
+			tr("^3!%1^7: Unknown command.")
 			.arg(command->name)
 		);
 		return;
@@ -333,17 +333,80 @@ void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin
 	zUrt::instance()->server()->tell(player, help->help);
 }
 
-void Module_Admin::cmd_listadmins(Module_Player */*p*/, int player, Arguments */*args*/, Admin_Command *command)
+void Module_Admin::cmd_listadmins(Module_Player */*p*/, int player, Arguments *args, Admin_Command *command)
 {
-	QString out = tr("^3!%1^7: There are %n admins:", "", m_admins.size())
-		.arg(command->name);
-	foreach(Admin_Admin admin, m_admins)
-		out += tr(" %1(%2),")
-			.arg(admin.name)
-			.arg(admin.id);
+	// Check if we have got a level restriction, or a name search
+	unsigned int level = 0;
+	QString
+		arg1 = args->get(1),
+		arg2 = args->get(2);
+	
+	if(!arg1.isEmpty())
+	{
+		bool number = false;
+		level = arg1.toUInt(&number);
+		if(number)
+		{
+			if(!m_levels.contains(level))
+			{
+				zUrt::instance()->server()->tell(player,
+					tr("^3!%1^7: Unknown level.")
+					.arg(command->name)
+				);
+				return;
+			}
+		}
+		else
+			arg2 = arg1;
+	}
+	
+	bool nameSearch = !arg2.isEmpty();
+	
+	// Get admins list, and group them by level
+	QHash <unsigned int, QList<Admin_Admin> > matches;
+	QHashIterator<QString, Admin_Admin> i(m_admins);
+	while(i.hasNext())
+	{
+		i.next();
+		if(	i.value().level >= level &&
+			(!nameSearch
+				|| Log::decolorise(i.value().name)
+					.toLower()
+					.contains(arg2)
+			)
+		)
+			matches[i.value().level] << i.value();
+	}
+	
+	// Sort levels
+	unsigned int numAdmins = 0;
+	QList<unsigned int> levels = matches.keys();
+	qSort(levels.begin(), levels.end());
+	
+	// Build output
+	QStringList out;
+	QString tmp;
+	
+	foreach(unsigned int lvl, levels)
+	{
+		tmp = tr("%1^7:", "Level name").arg(m_levels[lvl].name);
+		foreach(Admin_Admin admin, matches[lvl])
+		{
+			numAdmins++;
+			tmp += tr(" %1^7(%2),")
+				.arg(admin.name)
+				.arg(admin.id);
+		}
+		out << tmp.left(tmp.size() - 1) + '.';
+	}
+	
 	zUrt::instance()->server()->tell(player,
-		out.left(out.size() - 1) + "."
+		tr("^3!%1^7: %n admins found.", "", numAdmins)
+		.arg(command->name)
 	);
+	
+	foreach(QString txt, out)
+		zUrt::instance()->server()->tell(player, txt);
 }
 
 void Module_Admin::cmd_map(Module_Player */*p*/, int player, Arguments *args, Admin_Command *command)
@@ -411,12 +474,9 @@ void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */
 		.arg(name)
 		+ " " + tr("and %n admins loaded.", "", m_admins.size());
 	
-	if(player < 0)
-		Log::instance("admin")->information(out);
-	else
+	if(player >= 0)
 		zUrt::instance()->server()->tell(player, out);
-		
-		
+	
 	// No admins declared, give setlevel to everyone
 	if(m_admins.size() == 0)
 	{
@@ -464,7 +524,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 	if(!m_levels.contains(level))
 	{
 		zUrt::instance()->server()->tell(player,
-			tr("^3!%1^7: No such level.")
+			tr("^3!%1^7: Unknown level.")
 			.arg(command->name)
 		);
 		return;

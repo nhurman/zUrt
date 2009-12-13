@@ -26,7 +26,7 @@ QString Server::rcon(QString command, bool reply)
 {
 	if(!m_connected)
 		return "";
-	static const int RCON_INTERVAL = 500;
+	static const int RCON_INTERVAL = 510;
 	if(m_interval.elapsed() < RCON_INTERVAL)
 		Sleep::msleep(RCON_INTERVAL - m_interval.elapsed());
 	QString header = "\xFF\xFF\xFF\xFF";
