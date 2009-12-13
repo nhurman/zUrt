@@ -26,6 +26,8 @@ class Module_Admin : public Module
 		Admin_Command *getCommand(Arguments args, unsigned int index = 0);
 		unsigned int getLevel(Module_Player *p, int player);
 		bool adminHigher(Module_Player *p, unsigned int a, unsigned int b);
+		Admin_Admin *getAdmin(unsigned int id);
+		unsigned int getFreeAdminId();
 		QString matchOneMap(QString map, int admin = -1);
 		
 	private:
@@ -38,6 +40,7 @@ class Module_Admin : public Module
 		void cmd_admintest(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_help(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_forceteam(Module_Player *p, int player, Arguments *args, Admin_Command *command);
+		void cmd_listadmins(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_map(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_readconfig(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_setlevel(Module_Player *p, int player, Arguments *args, Admin_Command *command);
@@ -45,9 +48,11 @@ class Module_Admin : public Module
 
 struct Admin_Admin
 {
-	QString name;
+	unsigned int id;
 	unsigned int level;
-};		
+	QString guid;
+	QString name;
+};
 struct Admin_Command
 {
 	QString name;

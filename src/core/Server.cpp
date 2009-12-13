@@ -57,11 +57,6 @@ QString Server::rcon(QString command, bool reply)
 	return out.right(out.size() - header.size());
 }
 
-QString Server::clean(QString str)
-{
-	return str.replace("\"", "");
-}
-
 void Server::say(QString str)
 {
 	str = clean(str).trimmed();
@@ -104,21 +99,6 @@ void Server::tell(int id, QString str)
 		rcon("tell " + QString::number(id) + " \"^7" + str + "\"");
 }
 
-void Server::map(QString name)
-{
-	rcon("map " + name);
-}
-
-void Server::forceteam(int joueur, QString team)
-{
-	rcon("forceteam " + QString::number(joueur) + " " + team);
-}
-
-void Server::set(QString var, QString value)
-{
-	rcon("seta " + var + " \"" + clean(value) + "\"");
-}
-
 QString Server::get(QString var)
 {
 	QString data = rcon(var, true);
@@ -128,9 +108,9 @@ QString Server::get(QString var)
 	return Log::decolorise(data).trimmed();
 }
 
-bool Server::connected()
+void Server::set(QString var, QString value)
 {
-	return m_connected;
+	rcon("seta " + var + " \"" + clean(value) + "\"");
 }
 
 QStringList Server::maps()
@@ -180,4 +160,14 @@ void Server::loadMaps()
 		}
 		delete zip;
 	}
+}
+
+bool Server::connected()
+{
+	return m_connected;
+}
+
+QString Server::clean(QString str)
+{
+	return str.replace("\"", "");
 }

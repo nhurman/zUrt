@@ -12,7 +12,7 @@ Admin_Command Module_Admin::m_commands[] = {
 	},
 	{	tr("forceteam"), &Module_Admin::cmd_forceteam, "",
 		2, tr("[^5name^7|^5id^7] [^5auto^7|^5blue^7|^5red^7|^5spec^7]"),
-		tr("Forces a player to join a team (team's first letter is enough)")
+		tr("Forces a player to join a team (team's first letter is enough).")
 	},
 	{	tr("help"), &Module_Admin::cmd_help, "",
 		0, tr("(^5command^7)"),
@@ -21,6 +21,10 @@ Admin_Command Module_Admin::m_commands[] = {
 	{	tr("kick"), &Module_Admin::cmd_generic, "clientkick",
 		1, tr("[^5name^7|^5id^7]"),
 		tr("Kicks a player from the server.")
+	},
+	{	tr("listadmins"), &Module_Admin::cmd_listadmins, "",
+		0, tr("(^5level^7) (^5name^7)"),
+		tr("Lists the administrators.")
 	},
 	{	tr("map"), &Module_Admin::cmd_map, "",
 		1, tr("[^5name^7]"),
@@ -139,7 +143,48 @@ unsigned int Module_Admin::getLevel(Module_Player *p, int player)
 
 bool Module_Admin::adminHigher(Module_Player *p, unsigned int a, unsigned int b)
 {
-	return getLevel(p, a) >= getLevel(p, b);
+	unsigned int la, lb;
+	// Also check in configuration - doesn't have to be connected to test his level
+	if(a > 100)
+	{
+		Admin_Admin *admin = NULL;
+		if(!(admin = getAdmin(a)))
+			return false; // Should have been checked before calling adminHigher
+		la = admin->level;
+	}
+	else
+		la = getLevel(p, a);
+	if(b > 100)
+	{
+		Admin_Admin *admin = NULL;
+		if(!(admin = getAdmin(b)))
+			return false;
+		lb = admin->level;
+	}
+	else
+		lb = getLevel(p, b);
+	return la >= lb;
+}
+
+Admin_Admin *Module_Admin::getAdmin(unsigned int id)
+{
+	QHashIterator<QString, Admin_Admin> i(m_admins);
+	while(i.hasNext())
+	{
+		i.next();
+		if(i.value().id == id)
+			return &m_admins[i.key()];
+	}
+	return NULL;
+}
+
+unsigned int Module_Admin::getFreeAdminId()
+{
+	unsigned int id = 101;
+	foreach(Admin_Admin admin, m_admins)
+		if(id == admin.id)
+			id++;
+	return id;
 }
 
 QString Module_Admin::matchOneMap(QString map, int admin)
@@ -184,9 +229,18 @@ void Module_Admin::cmd_generic(Module_Player *p, int player, Arguments *args, Ad
 	else if(command->minArgs == 1)
 	{
 		int target = p->matchOnePlayer(args->get(1), player);
-		if(target != -1)
-			zUrt::instance()->server()->rcon(command->serverCmd + " "
-				+ QString::number(target));
+		if(target < 0)
+				return;
+		if(!adminHigher(p, player, target))
+		{
+			zUrt::instance()->server()->tell(player,
+				tr("^3!%1^7: Your target has a higher admin level than you.")
+				.arg(command->name)
+			);
+			return;
+		}
+		zUrt::instance()->server()->rcon(command->serverCmd + " "
+			+ QString::number(target));
 	}
 }
 
@@ -201,6 +255,32 @@ void Module_Admin::cmd_admintest(Module_Player *p, int player, Arguments */*args
 		.arg(m_levels[level].name)
 		.arg(level)
 	);
+}
+
+void Module_Admin::cmd_forceteam(Module_Player *p, int player, Arguments *args, Admin_Command *command)
+{
+	QChar letter = args->get(2).at(0);
+	QHash <QChar, QString> teams;
+		teams['b'] = "blue";
+		teams['r'] = "red";
+		teams['a'] = "free";
+		teams['s'] = "spectator";
+	
+	if(!teams.contains(letter))
+	{
+		zUrt::instance()->server()->tell(player,
+			tr("^3!%1^7: Invalid team.")
+			.arg(command->name)
+		);
+	}
+	else
+	{
+		int target = p->matchOnePlayer(args->get(1), player);
+		if(target != -1)
+			zUrt::instance()->server()->rcon(
+				"forceteam " + QString::number(target) + " " + teams[letter]
+			);
+	}
 }
 
 void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin_Command *command)
@@ -253,34 +333,17 @@ void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin
 	zUrt::instance()->server()->tell(player, help->help);
 }
 
-void Module_Admin::cmd_forceteam(Module_Player *p, int player, Arguments *args, Admin_Command *command)
+void Module_Admin::cmd_listadmins(Module_Player */*p*/, int player, Arguments */*args*/, Admin_Command *command)
 {
-	QChar letter = args->get(2).at(0);
-	QString team = "";
-	if(letter == 'b')
-		team = "blue";
-	else if(letter == 'r')
-		team = "red";
-	else if(letter == 'a')
-		team = "free";
-	else if(letter == 's')
-		team = "spectator";
-
-	if(team == "")
-	{
-		zUrt::instance()->server()->tell(player,
-			tr("^3!%1^7: Invalid team.")
-			.arg(command->name)
-		);
-	}
-	else
-	{
-		int target = p->matchOnePlayer(args->get(1), player);
-		if(target != -1)
-		{
-			zUrt::instance()->server()->forceteam(player, team);
-		}
-	}
+	QString out = tr("^3!%1^7: There are %n admins:", "", m_admins.size())
+		.arg(command->name);
+	foreach(Admin_Admin admin, m_admins)
+		out += tr(" %1(%2),")
+			.arg(admin.name)
+			.arg(admin.id);
+	zUrt::instance()->server()->tell(player,
+		out.left(out.size() - 1) + "."
+	);
 }
 
 void Module_Admin::cmd_map(Module_Player */*p*/, int player, Arguments *args, Admin_Command *command)
@@ -289,7 +352,7 @@ void Module_Admin::cmd_map(Module_Player */*p*/, int player, Arguments *args, Ad
 	if(map != "")
 	{
 		if(command->name == "map")
-			zUrt::instance()->server()->map(map);
+			zUrt::instance()->server()->rcon("map " + map);
 		else if(command->name == "nextmap")
 			zUrt::instance()->server()->set("g_nextmap", map);
 	}
@@ -332,8 +395,10 @@ void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */
 		for(unsigned int i = 0, j = admins.size(); i < j; i++)
 		{
 			config->beginGroup(admins[i]);
+			m_admins[admins[i]].id = config->value("id").toUInt();
+			m_admins[admins[i]].level = config->value("level").toUInt();
+			m_admins[admins[i]].guid = admins[i];
 			m_admins[admins[i]].name = config->value("name").toString();
-			m_admins[admins[i]].level = config->value("level").toInt();
 			if(!m_levels.contains(m_admins[admins[i]].level))
 				m_admins[admins[i]].level = 0;
 			config->endGroup();
@@ -346,7 +411,7 @@ void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */
 		.arg(name)
 		+ " " + tr("and %n admins loaded.", "", m_admins.size());
 	
-	if(player == -1)
+	if(player < 0)
 		Log::instance("admin")->information(out);
 	else
 		zUrt::instance()->server()->tell(player, out);
@@ -362,10 +427,30 @@ void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */
 
 void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, Admin_Command *command)
 {
-	int target = p->matchOnePlayer(args->get(1), player);
-	if(target == -1)
-		return;
+	bool number = false;
+	unsigned int id;
+	int target = -1;
+	QString guid = "";
 	
+	// First, check if the player is trying to access a saved admin	
+	id = args->get(1).toUInt(&number);
+	if(number && id > 100)
+	{
+		Admin_Admin *admin = NULL;
+		if((admin = getAdmin(id)))
+		{
+			target = id;
+			guid = admin->guid;
+		}
+	}
+	
+	// Admin not found, fall back to traditional methods
+	if(guid.isEmpty())
+	{
+		target = p->matchOnePlayer(args->get(1), player);
+		if(target < 0)
+			return; // Still not found - tell user
+	}
 	if(!adminHigher(p, player, target))
 	{
 		zUrt::instance()->server()->tell(player,
@@ -374,7 +459,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 		);
 		return;
 	}
-		
+	
 	unsigned int level = args->get(2).toInt();
 	if(!m_levels.contains(level))
 	{
@@ -385,15 +470,33 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 		return;
 	}
 	
+	unsigned int myLevel = getLevel(p, player);
+	if(myLevel != 0 && myLevel < level)
+	{
+		zUrt::instance()->server()->tell(player,
+			tr("^3!%1^7: You cannot setlevel higher than your own admin level (%1).")
+			.arg(command->name)
+			.arg(myLevel)
+		);
+		return;
+	}
+	
+	if(guid.isEmpty())
+	{
+		guid = p->get(target, "cl_guid");
+		id = m_admins.contains(guid) ? m_admins[guid].id : getFreeAdminId();
+	}
+	
 	QSettings *config = new QSettings("config/admins.cfg", QSettings::IniFormat);
-	config->beginGroup(p->get(target, "cl_guid"));
+	config->beginGroup(guid);
 	
 	if(level == 0)
 		config->remove("");
 	else
 	{
-		config->setValue("name", p->get(target, "name"));
+		config->setValue("id", id);
 		config->setValue("level", level);
+		config->setValue("name", p->get(target, "name"));		
 	}
 	
 	config->endGroup();
