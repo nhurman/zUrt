@@ -46,6 +46,9 @@ QString Server::rcon(QString command, bool reply)
 		);
 		exit(0);
 	}
+	
+	if(!reply)
+		m_socket->readAll();
 
 	QByteArray datagram;
 	datagram.resize(m_socket->pendingDatagramSize());
@@ -122,22 +125,31 @@ void Server::loadMaps()
 {
 	QString home = get("fs_homepath");
 	QString base = get("fs_basepath");
-	QStringList
-		paks = QStringList(),
-		pakNames = get("sv_referencedPakNames").split(' ');
+	QString game = get("fs_game");
+	QStringList paks, paths;
 	unsigned int i, j, k, l;
 	
 	home = (QFileInfo(home).isAbsolute() ? home : m_path + '/' + home) + '/';
 	base = (QFileInfo(base).isAbsolute() ? base : m_path + '/' + base) + '/';
+	paths << home + game << base + game;
 	
-	for(i = 0, j = pakNames.length(); i < j; i++)
+	// Get pk3s list
+	QDir dir;
+	dir.setFilter(QDir::Files);
+	dir.setNameFilters(QStringList() << "*.pk3");
+	
+	foreach(QString path, paths)
 	{
-		QString file = pakNames[i] + ".pk3";
-		if(QFile::exists(home + file))
-			paks << home + file;
-		if(QFile::exists(base + file))
-			paks << base + file;
-	}
+		dir.cd(path);
+		if(!dir.exists())
+		{
+			Log::instance("core")->error(tr("PK3s listing - folder %1 does not exist."));
+			continue;
+		}
+		QFileInfoList list = dir.entryInfoList();
+		foreach(QFileInfo file, list)
+			paks << dir.filePath(file.fileName());
+	} 
 	
 	ZipFile *zip;
 	QStringList files, parts, parts2;

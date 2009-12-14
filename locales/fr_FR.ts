@@ -353,6 +353,11 @@
         <source>Could not connect to %1 on port %2.</source>
         <translation>Connexion impossible à %1 sur le port %2.</translation>
     </message>
+    <message>
+        <location filename="../src/core/Server.cpp" line="146"/>
+        <source>PK3s listing - folder %1 does not exist.</source>
+        <translation>Listage des PK3s - le dossier %1 n&apos;existe pas.</translation>
+    </message>
 </context>
 <context>
     <name>zUrt</name>
