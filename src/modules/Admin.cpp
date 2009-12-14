@@ -2,53 +2,69 @@
 
 // Sorted commands list, see Admin.h for syntax.
 Admin_Command Module_Admin::m_commands[] = {
-	{	tr("admintest"), &Module_Admin::cmd_admintest, "",
+	{	tr("admintest"), &Module_Admin::cmd_admintest, "", false,
 		0, "",
 		tr("Displays your admin level.")
 	},
-	{	tr("cyclemap"), &Module_Admin::cmd_generic, "cyclemap",
+	{	tr("bigtext"), &Module_Admin::cmd_generic, "bigtext", false,
+		1, tr("[^5text^7]"),
+		tr("Prints text at the center of player's screens.")
+	},
+	{	tr("cyclemap"), &Module_Admin::cmd_generic, "cyclemap", false,
 		0, "",
 		tr("Loads next map.")
 	},
-	{	tr("forceteam"), &Module_Admin::cmd_forceteam, "",
+	{	tr("forceteam"), &Module_Admin::cmd_forceteam, "", false,
 		2, tr("[^5name^7|^5id^7] [^5auto^7|^5blue^7|^5red^7|^5spec^7]"),
 		tr("Forces a player to join a team (team's first letter is enough).")
 	},
-	{	tr("help"), &Module_Admin::cmd_help, "",
+	{	tr("help"), &Module_Admin::cmd_help, "", false,
 		0, tr("(^5command^7)"),
 		tr("Lists available commands. Adding the command name gives specific help.")
 	},
-	{	tr("kick"), &Module_Admin::cmd_generic, "clientkick",
+	{	tr("kick"), &Module_Admin::cmd_generic, "clientkick", true,
 		1, tr("[^5name^7|^5id^7]"),
 		tr("Kicks a player from the server.")
 	},
-	{	tr("listadmins"), &Module_Admin::cmd_listadmins, "",
+	{	tr("listadmins"), &Module_Admin::cmd_listadmins, "", false,
 		0, tr("(^5level^7) (^5name^7)"),
 		tr("Lists the administrators.")
 	},
-	{	tr("map"), &Module_Admin::cmd_map, "",
+	{	tr("map"), &Module_Admin::cmd_map, "", false,
 		1, tr("[^5name^7]"),
 		tr("Loads a map.")
 	},
-	{	tr("nextmap"), &Module_Admin::cmd_map, "",
+	{	tr("nextmap"), &Module_Admin::cmd_map, "", false,
 		1, tr("[^5name^7]"),
 		tr("Changes next map.")
 	},
-	{	tr("mute"), &Module_Admin::cmd_generic, "mute",
+	{	tr("mute"), &Module_Admin::cmd_generic, "mute", true,
 		1, tr("[^5name^7|^5id^7]"),
 		tr("Mutes a player.")
 	},
-	{	tr("readconfig"), &Module_Admin::cmd_readconfig, "",
+	{	tr("readconfig"), &Module_Admin::cmd_readconfig, "", false,
 		0, "",
 		tr("Reloads admins and levels.")
 	},
-	{	tr("setlevel"), &Module_Admin::cmd_setlevel, "",
+	{	tr("restart"), &Module_Admin::cmd_generic, "map_restart", false,
+		0, "",
+		tr("Restarts the current map.")
+	},
+	{	tr("setlevel"), &Module_Admin::cmd_setlevel, "", false,
 		2, tr("[^5name^7|^5id^7] [^5level^7]"),
 		tr("Sets a player's admin level.")
 	},
-	{	tr("slap"), &Module_Admin::cmd_generic, "slap",
+	{	tr("shuffleteams"), &Module_Admin::cmd_generic, "shuffleteams", false,
+		0, "",
+		tr("Shuffles teams.")
+	},
+	{	tr("slap"), &Module_Admin::cmd_generic, "slap", true,
 		1, tr("[^5name^7|^5id^7]"),
 		tr("Slaps a player.")
+	},
+	{	tr("veto"), &Module_Admin::cmd_generic, "veto", false,
+		0, "",
+		tr("Cancels the current vote.")
 	}
 };
 
@@ -74,7 +90,7 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 {
 	Module_Player *p = dynamic_cast<Module_Player*>(
 		zUrt::instance()->module("Player"));
-	unsigned int admin = args.get(0).toInt();
+	unsigned int admin = args.get(0).toUInt();
 	
 	// Only keep said text
 	args.truncate(2);
@@ -104,7 +120,7 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 		return;
 	}
 	
-	// Command execution
+	// Execute the handler
 	(this->*command->handler)(p, admin, &args, command);
 }
 
@@ -228,6 +244,14 @@ void Module_Admin::cmd_generic(Module_Player *p, int player, Arguments *args, Ad
 		zUrt::instance()->server()->rcon(command->serverCmd);
 	else if(command->minArgs == 1)
 	{
+		if(!command->matchPlayer)
+		{
+			zUrt::instance()->server()->rcon(
+				command->serverCmd +
+				" \"^7" + Server::clean(args->get(1, true)) + "\""
+			);
+			return;
+		}
 		int target = p->matchOnePlayer(args->get(1), player);
 		if(target < 0)
 				return;

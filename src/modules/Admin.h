@@ -58,6 +58,7 @@ struct Admin_Command
 	QString name;
 	void (Module_Admin::*handler)(Module_Player*, int, Arguments*, Admin_Command*);
 	QString serverCmd; // Only used with generic handler
+	bool matchPlayer; // Only used with generic handler
 	unsigned int minArgs;
 	QString syntax;
 	QString help;
