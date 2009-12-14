@@ -237,7 +237,7 @@
     </message>
     <message>
         <location filename="../src/modules/Admin.cpp" line="353"/>
-        <location filename="../src/modules/Admin.cpp" line="527"/>
+        <location filename="../src/modules/Admin.cpp" line="529"/>
         <source>^3!%1^7: Unknown level.</source>
         <translation>^3!%1^7 : Ce niveau n&apos;existe pas.</translation>
     </message>
@@ -285,7 +285,7 @@
     </message>
     <message>
         <location filename="../src/modules/Admin.cpp" line="237"/>
-        <location filename="../src/modules/Admin.cpp" line="517"/>
+        <location filename="../src/modules/Admin.cpp" line="519"/>
         <source>^3!%1^7: Your target has a higher admin level than you.</source>
         <translation>^3!%1^7 : Votre cible a un niveau d&apos;admin plus eleve que le votre.</translation>
     </message>
@@ -295,12 +295,12 @@
         <translation>^3!%1^7 : Cette commande n&apos;existe pas.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="537"/>
+        <location filename="../src/modules/Admin.cpp" line="539"/>
         <source>^3!%1^7: You cannot setlevel higher than your own admin level (%1).</source>
         <translation>^3!%1^7: Vous ne pouvez pas augmenter votre niveau (%1).</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="569"/>
+        <location filename="../src/modules/Admin.cpp" line="571"/>
         <source>^3!%1^7: %2^7 was given %3^7 admin rights by %4^7.</source>
         <translation>^3!%1^7 : %4^7 a donne les droits de %3^7 a %2^7.</translation>
     </message>

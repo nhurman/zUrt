@@ -490,9 +490,9 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 	bool number = false;
 	unsigned int id;
 	int target = -1;
-	QString guid = "";
+	QString guid = "", name = "";
 	
-	// First, check if the player is trying to access a saved admin	
+	// First, check if the player is trying to access a saved admin
 	id = args->get(1).toUInt(&number);
 	if(number && id > 100)
 	{
@@ -501,15 +501,17 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 		{
 			target = id;
 			guid = admin->guid;
+			name = admin->name;
 		}
 	}
 	
-	// Admin not found, fall back to traditional methods
+	// Admin not found, fall back to online players
 	if(guid.isEmpty())
 	{
 		target = p->matchOnePlayer(args->get(1), player);
 		if(target < 0)
 			return; // Still not found - tell user
+		name = p->get(target, "name");
 	}
 	if(!adminHigher(p, player, target))
 	{
@@ -520,8 +522,8 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 		return;
 	}
 	
-	unsigned int level = args->get(2).toInt();
-	if(!m_levels.contains(level))
+	unsigned int level = args->get(2).toUInt(&number);
+	if(!number || !m_levels.contains(level))
 	{
 		zUrt::instance()->server()->tell(player,
 			tr("^3!%1^7: Unknown level.")
@@ -556,7 +558,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 	{
 		config->setValue("id", id);
 		config->setValue("level", level);
-		config->setValue("name", p->get(target, "name"));		
+		config->setValue("name", name);
 	}
 	
 	config->endGroup();
@@ -568,7 +570,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 	zUrt::instance()->server()->say(
 		tr("^3!%1^7: %2^7 was given %3^7 admin rights by %4^7.")
 		.arg(command->name)
-		.arg(p->get(target, "name"))
+		.arg(name)
 		.arg(m_levels[level].name)
 		.arg(p->get(player, "name"))
 	);
