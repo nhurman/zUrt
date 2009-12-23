@@ -106,7 +106,7 @@ QString Server::get(QString var)
 {
 	QString data = rcon(var, true);
 	QString before = "print\n\"" + var + "\" is:\"";
-	data = data.right(data.length() -before.length());
+        data = data.right(data.size() -before.size());
 	data = data.left(data.indexOf('"'));
 	return Log::decolorise(data).trimmed();
 }
@@ -155,7 +155,7 @@ void Server::loadMaps()
 	QStringList files, parts, parts2;
 	m_maps = QStringList();
 	QString folder;
-	for(i = 0, j = paks.length(); i < j; i++)
+        for(i = 0, j = paks.size(); i < j; i++)
 	{
 		zip = new ZipFile(paks[i]);
 		files = zip->listFiles();

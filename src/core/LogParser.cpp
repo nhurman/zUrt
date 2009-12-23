@@ -36,13 +36,13 @@ void LogParser::readFile()
 void LogParser::parseLine(QString line)
 {
 	QStringList segments = line.split(" ", QString::SkipEmptyParts);
-	if(segments.length() < 3)
+        if(segments.size() < 3)
 		return;
 	// Hours:minutes
 	segments.removeFirst();
 	
 	QString type = segments.takeFirst();
-	if(type[type.length() - 1] == ':')
-		type.resize(type.length() - 1);
+        if(type[type.size() - 1] == ':')
+                type.resize(type.size() - 1);
 	zUrt::instance()->event(type, segments);
 }
