@@ -3,7 +3,7 @@
 Arguments::Arguments(QStringList parameters)
 {
 	m_arguments = parameters;
-	m_size = m_arguments.length();
+	m_size = m_arguments.size();
 	for(unsigned int i = 0; i < m_size; i++)
                 if(m_arguments[i][m_arguments[i].size() - 1] == ':')
                         m_arguments[i].resize(m_arguments[i].size() - 1);
