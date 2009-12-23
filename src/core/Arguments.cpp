@@ -5,8 +5,8 @@ Arguments::Arguments(QStringList parameters)
 	m_arguments = parameters;
 	m_size = m_arguments.length();
 	for(unsigned int i = 0; i < m_size; i++)
-		if(m_arguments[i][m_arguments[i].length() - 1] == ':')
-			m_arguments[i].resize(m_arguments[i].length() - 1);
+                if(m_arguments[i][m_arguments[i].size() - 1] == ':')
+                        m_arguments[i].resize(m_arguments[i].size() - 1);
 }
 
 unsigned int Arguments::size()
@@ -30,7 +30,7 @@ QString Arguments::get(unsigned int index, bool merge)
 void Arguments::truncate(unsigned int index)
 {
 	m_arguments = get(index, true).split(" ");
-	m_size = m_arguments.length();
+        m_size = m_arguments.size();
 }
 
 ConfigString Arguments::cs(unsigned int index)
@@ -39,7 +39,7 @@ ConfigString Arguments::cs(unsigned int index)
 	QStringList segments = str.split("\\");
 	segments.removeFirst();
 	ConfigString cs;
-	unsigned int size = segments.length();
+        unsigned int size = segments.size();
 	for(unsigned int i = 0; i + 1 < size; i += 2)
 		cs[segments[i]] = segments[i + 1];
 	return cs;
