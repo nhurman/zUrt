@@ -22,6 +22,12 @@ Server::Server(QString address, quint16 port, QString password, QString path)
 	loadMaps();
 }
 
+Server::~Server()
+{
+	delete m_address;
+	delete m_socket;
+}
+
 QString Server::rcon(QString command, bool reply)
 {
 	if(!m_connected)

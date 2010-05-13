@@ -14,6 +14,7 @@ class zUrt : public QObject, public Singleton<zUrt>
 	
 	public:
 		zUrt();
+		~zUrt();
 		void run();
 		void load(Module *module);
 		Server *server();

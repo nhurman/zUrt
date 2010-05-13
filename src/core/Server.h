@@ -14,6 +14,7 @@ class Server : public QObject
 
 	public:
 		Server(QString address, quint16 port, QString password, QString path);
+		~Server();
 		QString rcon(QString command, bool reply = false);
 		void say(QString texte);
 		void tell(int id, QString texte);

@@ -2,69 +2,73 @@
 
 // Sorted commands list, see Admin.h for syntax.
 Admin_Command Module_Admin::m_commands[] = {
-	{	tr("admintest"), &Module_Admin::cmd_admintest, "", false,
+	{	QObject::tr("admintest"), &Module_Admin::cmd_admintest, "", false,
 		0, "",
-		tr("Displays your admin level.")
+		QObject::tr("Displays your admin level.")
 	},
-	{	tr("bigtext"), &Module_Admin::cmd_generic, "bigtext", false,
-		1, tr("[^5text^7]"),
-		tr("Prints text at the center of player's screens.")
+	{	QObject::tr("bigtext"), &Module_Admin::cmd_generic, "bigtext", false,
+		1, QObject::tr("[^5text^7]"),
+		QObject::tr("Prints text at the center of player's screens.")
 	},
-	{	tr("cyclemap"), &Module_Admin::cmd_generic, "cyclemap", false,
+	{	QObject::tr("cyclemap"), &Module_Admin::cmd_generic, "cyclemap", false,
 		0, "",
-		tr("Loads next map.")
+		QObject::tr("Loads next map.")
 	},
-	{	tr("forceteam"), &Module_Admin::cmd_forceteam, "", false,
-		2, tr("[^5name^7|^5id^7] [^5auto^7|^5blue^7|^5red^7|^5spec^7]"),
-		tr("Forces a player to join a team (team's first letter is enough).")
+	{	QObject::tr("forceteam"), &Module_Admin::cmd_forceteam, "", false,
+		2, QObject::tr("[^5name^7|^5id^7] [^5auto^7|^5blue^7|^5red^7|^5spec^7]"),
+		QObject::tr("Forces a player to join a team (team's first letter is enough).")
 	},
-	{	tr("help"), &Module_Admin::cmd_help, "", false,
-		0, tr("(^5command^7)"),
-		tr("Lists available commands. Adding the command name gives specific help.")
+	{	QObject::tr("help"), &Module_Admin::cmd_help, "", false,
+		0, QObject::tr("(^5command^7)"),
+		QObject::tr("Lists available commands. Adding the command name gives specific help.")
 	},
-	{	tr("kick"), &Module_Admin::cmd_generic, "clientkick", true,
-		1, tr("[^5name^7|^5id^7]"),
-		tr("Kicks a player from the server.")
+	{	QObject::tr("kick"), &Module_Admin::cmd_generic, "clientkick", true,
+		1, QObject::tr("[^5name^7|^5id^7]"),
+		QObject::tr("Kicks a player from the server.")
 	},
-	{	tr("listadmins"), &Module_Admin::cmd_listadmins, "", false,
-		0, tr("(^5level^7) (^5name^7)"),
-		tr("Lists the administrators.")
+	{	QObject::tr("listadmins"), &Module_Admin::cmd_listadmins, "", false,
+		0, QObject::tr("(^5level^7) (^5name^7)"),
+		QObject::tr("Lists the administrators.")
 	},
-	{	tr("map"), &Module_Admin::cmd_map, "", false,
-		1, tr("[^5name^7]"),
-		tr("Loads a map.")
+	{	QObject::tr("map"), &Module_Admin::cmd_map, "", false,
+		1, QObject::tr("[^5name^7]"),
+		QObject::tr("Loads a map.")
 	},
-	{	tr("nextmap"), &Module_Admin::cmd_map, "", false,
-		1, tr("[^5name^7]"),
-		tr("Changes next map.")
+	{	QObject::tr("nextmap"), &Module_Admin::cmd_map, "", false,
+		1, QObject::tr("[^5name^7]"),
+		QObject::tr("Changes next map.")
 	},
-	{	tr("mute"), &Module_Admin::cmd_generic, "mute", true,
-		1, tr("[^5name^7|^5id^7]"),
-		tr("Mutes a player.")
+	{	QObject::tr("mute"), &Module_Admin::cmd_generic, "mute", true,
+		1, QObject::tr("[^5name^7|^5id^7]"),
+		QObject::tr("Mutes a player.")
 	},
-	{	tr("readconfig"), &Module_Admin::cmd_readconfig, "", false,
+	{	QObject::tr("readconfig"), &Module_Admin::cmd_readconfig, "", false,
 		0, "",
-		tr("Reloads admins and levels.")
+		QObject::tr("Reloads admins and levels.")
 	},
-	{	tr("restart"), &Module_Admin::cmd_generic, "map_restart", false,
+	{	QObject::tr("restart"), &Module_Admin::cmd_generic, "map_restart", false,
 		0, "",
-		tr("Restarts the current map.")
+		QObject::tr("Restarts the current map.")
 	},
-	{	tr("setlevel"), &Module_Admin::cmd_setlevel, "", false,
-		2, tr("[^5name^7|^5id^7] [^5level^7]"),
-		tr("Sets a player's admin level.")
-	},
-	{	tr("shuffleteams"), &Module_Admin::cmd_generic, "shuffleteams", false,
+	{	QObject::tr("say"), &Module_Admin::cmd_generic, "say", false,
 		0, "",
-		tr("Shuffles teams.")
+		QObject::tr("Say something as console.")
 	},
-	{	tr("slap"), &Module_Admin::cmd_generic, "slap", true,
-		1, tr("[^5name^7|^5id^7]"),
-		tr("Slaps a player.")
+	{	QObject::tr("setlevel"), &Module_Admin::cmd_setlevel, "", false,
+		2, QObject::tr("[^5name^7|^5id^7] [^5level^7]"),
+		QObject::tr("Sets a player's admin level.")
 	},
-	{	tr("veto"), &Module_Admin::cmd_generic, "veto", false,
+	{	QObject::tr("shuffleteams"), &Module_Admin::cmd_generic, "shuffleteams", false,
 		0, "",
-		tr("Cancels the current vote.")
+		QObject::tr("Shuffles teams.")
+	},
+	{	QObject::tr("slap"), &Module_Admin::cmd_generic, "slap", true,
+		1, QObject::tr("[^5name^7|^5id^7]"),
+		QObject::tr("Slaps a player.")
+	},
+	{	QObject::tr("veto"), &Module_Admin::cmd_generic, "veto", false,
+		0, "",
+		QObject::tr("Cancels the current vote.")
 	}
 };
 
@@ -103,7 +107,7 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 	if(!commandPermitted(p, admin, command))
 	{
 		zUrt::instance()->server()->tell(admin,
-			tr("^3!%1^7: Access denied.")
+			QObject::tr("^3!%1^7: Access denied.")
 			.arg(command->name)
 		);
 		return;
@@ -113,7 +117,7 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 	if(args.size() <= command->minArgs)
 	{
 		zUrt::instance()->server()->tell(admin,
-			tr("Syntax: ^3!%1^7 %2")
+			QObject::tr("Syntax: ^3!%1^7 %2")
 			.arg(command->name)
 			.arg(command->syntax)
 		);
@@ -216,16 +220,16 @@ QString Module_Admin::matchOneMap(QString map, int admin)
 	if(maps.isEmpty())
 	{
 		zUrt::instance()->server()->tell(admin,
-			tr("No map found.")
+			QObject::tr("No map found.")
 		);
 	}
 	else if(maps.size() == 1)
 		return maps[0];
 	else
 	{
-		QString out = tr("Several maps found, please be more precise:");
+		QString out = QObject::tr("Several maps found, please be more precise:");
 		for(int i = 0, j = maps.size(); i < j; i++)
-			out += tr(" %1,")
+			out += QObject::tr(" %1,")
 				.arg(maps[i]);
 		// Remove last comma
 		zUrt::instance()->server()->tell(admin, out.left(out.size() - 1) + '.');
@@ -258,7 +262,7 @@ void Module_Admin::cmd_generic(Module_Player *p, int player, Arguments *args, Ad
 		if(!adminHigher(p, player, target))
 		{
 			zUrt::instance()->server()->tell(player,
-				tr("^3!%1^7: Your target has a higher admin level than you.")
+				QObject::tr("^3!%1^7: Your target has a higher admin level than you.")
 				.arg(command->name)
 			);
 			return;
@@ -273,7 +277,7 @@ void Module_Admin::cmd_admintest(Module_Player *p, int player, Arguments */*args
 	unsigned int level = getLevel(p, player);
 
 	zUrt::instance()->server()->say(
-		tr("^3!%1^7: %2^7 is a %3^7 (level %4).")
+		QObject::tr("^3!%1^7: %2^7 is a %3^7 (level %4).")
 		.arg(command->name)
 		.arg(p->get(player, "name"))
 		.arg(m_levels[level].name)
@@ -293,7 +297,7 @@ void Module_Admin::cmd_forceteam(Module_Player *p, int player, Arguments *args, 
 	if(!teams.contains(letter))
 	{
 		zUrt::instance()->server()->tell(player,
-			tr("^3!%1^7: Invalid team.")
+			QObject::tr("^3!%1^7: Invalid team.")
 			.arg(command->name)
 		);
 	}
@@ -317,9 +321,9 @@ void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin
 			if(commandPermitted(p, player, &m_commands[i]))
 			{
 				num++;
-				out += tr(" !%1,").arg(m_commands[i].name);
+				out += QObject::tr(" !%1,").arg(m_commands[i].name);
 			}
-		out = tr("^3!%1^7: %n commands available:", "", num)
+		out = QObject::tr("^3!%1^7: %n commands available:", "", num)
 			.arg(command->name)
 			+ out;
 		zUrt::instance()->server()->tell(player, out.left(out.size() - 1) + '.');
@@ -333,7 +337,7 @@ void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin
 	if(!help)
 	{
 		zUrt::instance()->server()->tell(player,
-			tr("^3!%1^7: Unknown command.")
+			QObject::tr("^3!%1^7: Unknown command.")
 			.arg(command->name)
 		);
 		return;
@@ -342,7 +346,7 @@ void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin
 	if(!commandPermitted(p, player, help))
 	{
 		zUrt::instance()->server()->tell(player,
-			tr("^3!%1^7: Access to ^3!%2^7 denied.")
+			QObject::tr("^3!%1^7: Access to ^3!%2^7 denied.")
 			.arg(command->name)
 			.arg(help->name)
 		);
@@ -350,7 +354,7 @@ void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin
 	}
 	
 	zUrt::instance()->server()->tell(player,
-		tr("Syntax: ^3!%1^7%2.")
+		QObject::tr("Syntax: ^3!%1^7%2.")
 		.arg(help->name)
 		.arg(help->syntax != "" ? ' ' + help->syntax : "")
 	);
@@ -374,7 +378,7 @@ void Module_Admin::cmd_listadmins(Module_Player */*p*/, int player, Arguments *a
 			if(!m_levels.contains(level))
 			{
 				zUrt::instance()->server()->tell(player,
-					tr("^3!%1^7: Unknown level.")
+					QObject::tr("^3!%1^7: Unknown level.")
 					.arg(command->name)
 				);
 				return;
@@ -413,11 +417,11 @@ void Module_Admin::cmd_listadmins(Module_Player */*p*/, int player, Arguments *a
 	
 	foreach(unsigned int lvl, levels)
 	{
-		tmp = tr("%1^7:", "Level name").arg(m_levels[lvl].name);
+		tmp = QObject::tr("%1^7:", "Level name").arg(m_levels[lvl].name);
 		foreach(Admin_Admin admin, matches[lvl])
 		{
 			numAdmins++;
-			tmp += tr(" %1^7(%2),")
+			tmp += QObject::tr(" %1^7(%2),")
 				.arg(admin.name)
 				.arg(admin.id);
 		}
@@ -425,7 +429,7 @@ void Module_Admin::cmd_listadmins(Module_Player */*p*/, int player, Arguments *a
 	}
 	
 	zUrt::instance()->server()->tell(player,
-		tr("^3!%1^7: %n admins found.", "", numAdmins)
+		QObject::tr("^3!%1^7: %n admins found.", "", numAdmins)
 		.arg(command->name)
 	);
 	
@@ -494,9 +498,9 @@ void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */
 	}
 	
 	QString out =
-		tr("^3!%1^7: %n levels", "", m_levels.size())
+		QObject::tr("^3!%1^7: %n levels", "", m_levels.size())
 		.arg(name)
-		+ " " + tr("and %n admins loaded.", "", m_admins.size());
+		+ " " + QObject::tr("and %n admins loaded.", "", m_admins.size());
 	
 	if(player >= 0)
 		zUrt::instance()->server()->tell(player, out);
@@ -540,7 +544,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 	if(!adminHigher(p, player, target))
 	{
 		zUrt::instance()->server()->tell(player,
-			tr("^3!%1^7: Your target has a higher admin level than you.")
+			QObject::tr("^3!%1^7: Your target has a higher admin level than you.")
 			.arg(command->name)
 		);
 		return;
@@ -550,7 +554,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 	if(!number || !m_levels.contains(level))
 	{
 		zUrt::instance()->server()->tell(player,
-			tr("^3!%1^7: Unknown level.")
+			QObject::tr("^3!%1^7: Unknown level.")
 			.arg(command->name)
 		);
 		return;
@@ -560,7 +564,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 	if(myLevel != 0 && myLevel < level)
 	{
 		zUrt::instance()->server()->tell(player,
-			tr("^3!%1^7: You cannot setlevel higher than your own admin level (%1).")
+			QObject::tr("^3!%1^7: You cannot setlevel higher than your own admin level (%1).")
 			.arg(command->name)
 			.arg(myLevel)
 		);
@@ -592,7 +596,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 	cmd_readconfig(NULL, -1, NULL, NULL);
 	
 	zUrt::instance()->server()->say(
-		tr("^3!%1^7: %2^7 was given %3^7 admin rights by %4^7.")
+		QObject::tr("^3!%1^7: %2^7 was given %3^7 admin rights by %4^7.")
 		.arg(command->name)
 		.arg(name)
 		.arg(m_levels[level].name)

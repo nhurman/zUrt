@@ -12,6 +12,13 @@ zUrt::zUrt()
 	m_server->say(tr("Hi everyone !", "Bot greeting when it connects"));
 }
 
+zUrt::~zUrt()
+{
+	delete m_settings;
+	delete m_server;
+	delete m_log;
+}
+
 void zUrt::run()
 {
 	m_log = new LogParser();
