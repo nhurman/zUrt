@@ -51,8 +51,8 @@ Admin_Command Module_Admin::m_commands[] = {
 		QObject::tr("Restarts the current map.")
 	},
 	{	QObject::tr("say"), &Module_Admin::cmd_generic, "say", false,
-		0, "",
-		QObject::tr("Say something as console.")
+                1, "[^5text^7]",
+                QObject::tr("Says something as console.")
 	},
 	{	QObject::tr("setlevel"), &Module_Admin::cmd_setlevel, "", false,
 		2, QObject::tr("[^5name^7|^5id^7] [^5level^7]"),
