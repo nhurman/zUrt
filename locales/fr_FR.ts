@@ -224,7 +224,7 @@
     </message>
     <message>
         <location filename="../src/modules/Admin.cpp" line="55"/>
-        <source>Say something as console.</source>
+        <source>Says something as console.</source>
         <translation>Parler en tant que la console.</translation>
     </message>
     <message>
