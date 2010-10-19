@@ -52,7 +52,7 @@ QString Server::rcon(QString command, bool reply)
 		);
 		exit(0);
 	}
-	
+
 	if(!reply)
 		m_socket->readAll();
 
@@ -70,16 +70,17 @@ void Server::say(QString str)
 {
 	str = clean(str).trimmed();
 	unsigned int size = str.size();
-	const unsigned int TRIM = 60;
+	const unsigned int TRIM = 65;
 	if(size > TRIM)
 	{
-		int i, split = str.indexOf(' ', TRIM) - 1;
-		for(i = split; i >= 0; i++)
+		int i;
+
+		for(i = TRIM; i >= 0; i--)
 			if(str[i] == ' ')
 				break;
 		if(i <= 0)
 			i = TRIM;
-		
+
 		rcon("say \"^7" + str.left(i) + "\"");
 		say(str.right(str.size() - i));
 	}
@@ -100,7 +101,7 @@ void Server::tell(int id, QString str)
 				break;
 		if(i <= 0)
 			i = TRIM;
-		
+
 		rcon("tell " + QString::number(id) + " \"^7" + str.left(i) + "\"");
 		tell(id, str.right(str.size() - i));
 	}
@@ -134,16 +135,16 @@ void Server::loadMaps()
 	QString game = get("fs_game");
 	QStringList paks, paths;
 	unsigned int i, j, k, l;
-	
+
 	home = (QFileInfo(home).isAbsolute() ? home : m_path + '/' + home) + '/';
 	base = (QFileInfo(base).isAbsolute() ? base : m_path + '/' + base) + '/';
 	paths << home + game << base + game;
-	
+
 	// Get pk3s list
 	QDir dir;
 	dir.setFilter(QDir::Files);
 	dir.setNameFilters(QStringList() << "*.pk3");
-	
+
 	foreach(QString path, paths)
 	{
 		dir.cd(path);
@@ -155,8 +156,8 @@ void Server::loadMaps()
 		QFileInfoList list = dir.entryInfoList();
 		foreach(QFileInfo file, list)
 			paks << dir.filePath(file.fileName());
-	} 
-	
+	}
+
 	ZipFile *zip;
 	QStringList files, parts, parts2;
 	m_maps = QStringList();

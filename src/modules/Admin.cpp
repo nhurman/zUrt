@@ -6,6 +6,11 @@ Admin_Command Module_Admin::m_commands[] = {
 		0, "",
 		QObject::tr("Displays your admin level.")
 	},
+	{	QObject::tr("ban"), &Module_Admin::cmd_ban, "", false,
+		1, QObject::tr("[^5name^7|^5id^7]"),
+		QObject::tr("Bans a player from the server.")
+
+	},
 	{	QObject::tr("bigtext"), &Module_Admin::cmd_generic, "bigtext", false,
 		1, QObject::tr("[^5text^7]"),
 		QObject::tr("Prints text at the center of player's screens.")
@@ -95,14 +100,14 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 	Module_Player *p = dynamic_cast<Module_Player*>(
 		zUrt::instance()->module("Player"));
 	unsigned int admin = args.get(0).toUInt();
-	
+
 	// Only keep said text
 	args.truncate(2);
-	
+
 	Admin_Command *command = getCommand(args);
 	if(!command)
 		return;
-	
+
 	// Can the player use this command ?
 	if(!commandPermitted(p, admin, command))
 	{
@@ -112,7 +117,7 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 		);
 		return;
 	}
-	
+
 	// Are there enough arguments ?
 	if(args.size() <= command->minArgs)
 	{
@@ -123,7 +128,7 @@ void Module_Admin::event(QString /*type*/, Arguments args)
 		);
 		return;
 	}
-	
+
 	// Execute the handler
 	(this->*command->handler)(p, admin, &args, command);
 }
@@ -138,7 +143,7 @@ Admin_Command *Module_Admin::getCommand(QString name)
 {
 	if(name[0] != '!')
 		return NULL;
-	
+
 	name = name.right(name.size() - 1);
 	Admin_Command *command = NULL;
 	for(unsigned int i = 0; i < m_numCommands; i++)
@@ -210,13 +215,7 @@ unsigned int Module_Admin::getFreeAdminId()
 QString Module_Admin::matchOneMap(QString map, int admin)
 {
 	QStringList maps = zUrt::instance()->server()->maps().filter(map);
-	/*
-	for(int i = 0; i < maps.count(); i++)
-	{
-		if(!list.contains(maps[i]))
-			list.push_back(maps[i]);
-	}*/
-	
+
 	if(maps.isEmpty())
 	{
 		zUrt::instance()->server()->tell(admin,
@@ -285,6 +284,22 @@ void Module_Admin::cmd_admintest(Module_Player *p, int player, Arguments */*args
 	);
 }
 
+void Module_Admin::cmd_ban(Module_Player *p, int player, Arguments *args, Admin_Command *command)
+{
+	int target = p->matchOnePlayer(args->get(1), player);
+	if (target < 0)
+		return;
+
+
+	/*zUrt::instance()->server()->rcon("kick " + QString::number(target));
+
+	zUrt::instance()->server()->say(
+		QObject::tr("^3!%1^7: %2^7 has been banned.")
+		.arg(command->name)
+		.arg(p->get(player, "name"))
+	);*/
+}
+
 void Module_Admin::cmd_forceteam(Module_Player *p, int player, Arguments *args, Admin_Command *command)
 {
 	QChar letter = args->get(2).at(0);
@@ -293,7 +308,7 @@ void Module_Admin::cmd_forceteam(Module_Player *p, int player, Arguments *args, 
 		teams['r'] = "red";
 		teams['a'] = "free";
 		teams['s'] = "spectator";
-	
+
 	if(!teams.contains(letter))
 	{
 		zUrt::instance()->server()->tell(player,
@@ -329,7 +344,7 @@ void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin
 		zUrt::instance()->server()->tell(player, out.left(out.size() - 1) + '.');
 		return;
 	}
-	
+
 	QString name = args->get(1);
 	if(name[0] != '!')
 		name = '!' + name;
@@ -342,7 +357,7 @@ void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin
 		);
 		return;
 	}
-	
+
 	if(!commandPermitted(p, player, help))
 	{
 		zUrt::instance()->server()->tell(player,
@@ -352,7 +367,7 @@ void Module_Admin::cmd_help(Module_Player *p, int player, Arguments *args, Admin
 		);
 		return;
 	}
-	
+
 	zUrt::instance()->server()->tell(player,
 		QObject::tr("Syntax: ^3!%1^7%2.")
 		.arg(help->name)
@@ -368,7 +383,7 @@ void Module_Admin::cmd_listadmins(Module_Player */*p*/, int player, Arguments *a
 	QString
 		arg1 = args->get(1),
 		arg2 = args->get(2);
-	
+
 	if(!arg1.isEmpty())
 	{
 		bool number = false;
@@ -387,9 +402,9 @@ void Module_Admin::cmd_listadmins(Module_Player */*p*/, int player, Arguments *a
 		else
 			arg2 = arg1;
 	}
-	
+
 	bool nameSearch = !arg2.isEmpty();
-	
+
 	// Get admins list, and group them by level
 	QHash <unsigned int, QList<Admin_Admin> > matches;
 	QHashIterator<QString, Admin_Admin> i(m_admins);
@@ -405,16 +420,16 @@ void Module_Admin::cmd_listadmins(Module_Player */*p*/, int player, Arguments *a
 		)
 			matches[i.value().level] << i.value();
 	}
-	
+
 	// Sort levels
 	unsigned int numAdmins = 0;
 	QList<unsigned int> levels = matches.keys();
 	qSort(levels.begin(), levels.end());
-	
+
 	// Build output
 	QStringList out;
 	QString tmp;
-	
+
 	foreach(unsigned int lvl, levels)
 	{
 		tmp = QObject::tr("%1^7:", "Level name").arg(m_levels[lvl].name);
@@ -427,12 +442,12 @@ void Module_Admin::cmd_listadmins(Module_Player */*p*/, int player, Arguments *a
 		}
 		out << tmp.left(tmp.size() - 1) + '.';
 	}
-	
+
 	zUrt::instance()->server()->tell(player,
 		QObject::tr("^3!%1^7: %n admins found.", "", numAdmins)
 		.arg(command->name)
 	);
-	
+
 	foreach(QString txt, out)
 		zUrt::instance()->server()->tell(player, txt);
 }
@@ -453,19 +468,19 @@ void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */
 {
 	QSettings *config = NULL;
 	QString name = command ? command->name : "readconfig";
-	
+
 	// Admin levels loading
 	{
 		config = new QSettings("config/levels.cfg", QSettings::IniFormat);
 		QStringList levels = config->childGroups();
 		m_levels = QHash<unsigned int, Admin_Level>();
-		
+
 		for(unsigned int i = 0, j = levels.size(); i < j; i++)
 		{
 			config->beginGroup(levels[i]);
 			unsigned int level = levels[i].toInt();
 			m_levels[level].name = config->value("name").toString();
-	
+
 			QStringList commands = config->value("commands").toString()
 				.replace(" ", "").split("|");
 			bool all = commands.contains("*");
@@ -476,13 +491,13 @@ void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */
 		}
 		delete config;
 	}
-	
+
 	// Admins loading
 	{
 		config = new QSettings("config/admins.cfg", QSettings::IniFormat);
 		QStringList admins = config->childGroups();
 		m_admins = QHash<QString, Admin_Admin>();
-		
+
 		for(unsigned int i = 0, j = admins.size(); i < j; i++)
 		{
 			config->beginGroup(admins[i]);
@@ -496,15 +511,15 @@ void Module_Admin::cmd_readconfig(Module_Player */*p*/, int player, Arguments */
 		}
 		delete config;
 	}
-	
+
 	QString out =
 		QObject::tr("^3!%1^7: %n levels", "", m_levels.size())
 		.arg(name)
 		+ " " + QObject::tr("and %n admins loaded.", "", m_admins.size());
-	
+
 	if(player >= 0)
 		zUrt::instance()->server()->tell(player, out);
-	
+
 	// No admins declared, give setlevel to everyone
 	if(m_admins.size() == 0)
 	{
@@ -519,7 +534,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 	unsigned int id;
 	int target = -1;
 	QString guid = "", name = "";
-	
+
 	// First, check if the player is trying to access a saved admin
 	id = args->get(1).toUInt(&number);
 	if(number && id > 100)
@@ -532,7 +547,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 			name = admin->name;
 		}
 	}
-	
+
 	// Admin not found, fall back to online players
 	if(guid.isEmpty())
 	{
@@ -549,7 +564,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 		);
 		return;
 	}
-	
+
 	unsigned int level = args->get(2).toUInt(&number);
 	if(!number || !m_levels.contains(level))
 	{
@@ -559,7 +574,7 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 		);
 		return;
 	}
-	
+
 	unsigned int myLevel = getLevel(p, player);
 	if(myLevel != 0 && myLevel < level)
 	{
@@ -570,16 +585,16 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 		);
 		return;
 	}
-	
+
 	if(guid.isEmpty())
 	{
 		guid = p->get(target, "cl_guid");
 		id = m_admins.contains(guid) ? m_admins[guid].id : getFreeAdminId();
 	}
-	
+
 	QSettings *config = new QSettings("config/admins.cfg", QSettings::IniFormat);
 	config->beginGroup(guid);
-	
+
 	if(level == 0)
 		config->remove("");
 	else
@@ -588,13 +603,13 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 		config->setValue("level", level);
 		config->setValue("name", name);
 	}
-	
+
 	config->endGroup();
 	config->sync();
 	delete config;
-	
+
 	cmd_readconfig(NULL, -1, NULL, NULL);
-	
+
 	zUrt::instance()->server()->say(
 		QObject::tr("^3!%1^7: %2^7 was given %3^7 admin rights by %4^7.")
 		.arg(command->name)

@@ -3,8 +3,9 @@
 #include <QSettings>
 
 #include "core/zUrt.h"
-#include "modules/Admin.h"
 #include "modules/Player.h"
+#include "modules/Admin.h"
+#include "modules/Ban.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
 	bot = zUrt::instance();
 	bot->load(new Module_Player);
 	bot->load(new Module_Admin);
+	bot->load(new Module_Ban);
 	bot->run();
 
 	return app.exec();

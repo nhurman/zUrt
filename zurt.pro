@@ -15,7 +15,8 @@ SOURCES = src/main.cpp \
  src/core/zUrt.cpp \
   \
  src/modules/Player.cpp \
- src/modules/Admin.cpp
+ src/modules/Admin.cpp \
+ src/modules/Ban.cpp
 HEADERS += src/core/Arguments.h \
  src/core/Log.h \
  src/core/LogParser.h \
@@ -27,4 +28,5 @@ HEADERS += src/core/Arguments.h \
  src/core/zUrt.h \
   \
  src/modules/Player.h \
- src/modules/Admin.h
+ src/modules/Admin.h \
+ src/modules/Ban.h

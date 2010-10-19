@@ -29,14 +29,15 @@ class Module_Admin : public Module
 		Admin_Admin *getAdmin(unsigned int id);
 		unsigned int getFreeAdminId();
 		QString matchOneMap(QString map, int admin = -1);
-		
+
 	private:
 		QHash<unsigned int, Admin_Level> m_levels;
 		QHash<QString, Admin_Admin> m_admins;
 		static Admin_Command m_commands[];
 		static unsigned int m_numCommands;
-		
+
 		void cmd_generic(Module_Player *p, int player, Arguments *args, Admin_Command *command);
+		void cmd_ban(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_admintest(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_help(Module_Player *p, int player, Arguments *args, Admin_Command *command);
 		void cmd_forceteam(Module_Player *p, int player, Arguments *args, Admin_Command *command);
