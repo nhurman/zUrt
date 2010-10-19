@@ -8,14 +8,14 @@
 class LogParser : public QObject
 {
 	Q_OBJECT
-	
+
 	public:
 		LogParser();
 		void readFile();
-	
+
 	private:
 		QFile *m_file;
-		
+
 		void parseLine(QString line);
 };
 

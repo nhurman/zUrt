@@ -290,14 +290,23 @@ void Module_Admin::cmd_ban(Module_Player *p, int player, Arguments *args, Admin_
 	if (target < 0)
 		return;
 
+	Module_Ban *b = dynamic_cast<Module_Ban*>(
+		zUrt::instance()->module("Ban"));
+	b->ban(
+		p->get(target, "ip"),
+		p->get(target, "cl_guid"),
+		p->get(target, "name"),
+		p->get(player, "name"), // Admin who set the ban
+		QDateTime::currentDateTime().addDays(1)
+	);
 
-	/*zUrt::instance()->server()->rcon("kick " + QString::number(target));
+	zUrt::instance()->server()->rcon("clientkick " + QString::number(target));
 
 	zUrt::instance()->server()->say(
 		QObject::tr("^3!%1^7: %2^7 has been banned.")
 		.arg(command->name)
-		.arg(p->get(player, "name"))
-	);*/
+		.arg(p->get(target, "name"))
+	);
 }
 
 void Module_Admin::cmd_forceteam(Module_Player *p, int player, Arguments *args, Admin_Command *command)

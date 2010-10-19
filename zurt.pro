@@ -1,5 +1,5 @@
 TEMPLATE = app
-QT = core network sql
+QT = core network
 CONFIG += qt release warn_on console
 TRANSLATIONS = locales/fr_FR.ts
 DESTDIR = build/bin

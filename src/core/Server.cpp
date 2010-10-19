@@ -68,21 +68,18 @@ QString Server::rcon(QString command, bool reply)
 
 void Server::say(QString str)
 {
+	const unsigned int TRIM = 65;
 	str = clean(str).trimmed();
 	unsigned int size = str.size();
-	const unsigned int TRIM = 65;
+
 	if(size > TRIM)
 	{
-		int i;
+		int pos = str.lastIndexOf(' ', TRIM);
+		if(pos <= 0)
+			pos = TRIM;
 
-		for(i = TRIM; i >= 0; i--)
-			if(str[i] == ' ')
-				break;
-		if(i <= 0)
-			i = TRIM;
-
-		rcon("say \"^7" + str.left(i) + "\"");
-		say(str.right(str.size() - i));
+		rcon("say \"^7" + str.left(pos) + "\"");
+		say(str.right(size - pos));
 	}
 	else
 		rcon("say \"^7" + clean(str) + "\"");

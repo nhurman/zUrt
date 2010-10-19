@@ -3,6 +3,7 @@
 
 #include "../core/zUrt.h"
 #include "Player.h"
+#include "Ban.h"
 
 struct Admin_Admin;
 struct Admin_Command;
