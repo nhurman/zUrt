@@ -23,6 +23,13 @@ class Module_Ban : public Module
 		QStringList listens();
 		unsigned int ban(QString ip, QString guid, QString name, QString admin, QDateTime expiration);
 		void readConfig();
+		//QHash<unsigned int, Ban_Ban> getBans();
+
+		enum
+		{
+			MATCH_ANY,
+			MATCH_ALL
+		};
 
 	public slots:
 		void event(QString type, Arguments args);
@@ -35,12 +42,6 @@ class Module_Ban : public Module
 		QHash<unsigned int, Ban_Ban> m_bans;
 
 		void writeConfig();
-
-		enum
-		{
-			MATCH_ANY,
-			MATCH_ALL
-		};
 };
 
 struct Ban_Ban

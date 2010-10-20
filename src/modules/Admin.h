@@ -18,6 +18,8 @@ class Module_Admin : public Module
 		QString name();
 		QStringList listens();
 
+		static int parseTime(QString expr);
+
 	public slots:
 		void event(QString type, Arguments args);
 

@@ -1,4 +1,3 @@
-
 #include "Ban.h"
 
 Module_Ban::Module_Ban()
@@ -18,12 +17,12 @@ QStringList Module_Ban::listens()
 
 void Module_Ban::event(QString /*type*/, Arguments args)
 {
-	// Get Ip and GUID then check if they are in ban list
+	// Get Ip and GUID then check if they are in the ban list
 	ConfigString cs = args.cs(1);
 	QString guid = cs["cl_guid"];
 	QString ip = cs["ip"];
 
-	if(isBanned(ip, guid))
+	if(isBanned(ip, guid, MATCH_ANY))
 		zUrt::instance()->server()->rcon("clientkick "
 			+ args.get(0));
 }

@@ -290,6 +290,33 @@ void Module_Admin::cmd_ban(Module_Player *p, int player, Arguments *args, Admin_
 	if (target < 0)
 		return;
 
+	if(!adminHigher(p, player, target))
+	{
+		zUrt::instance()->server()->tell(player,
+			QObject::tr("^3!%1^7: Your target has a higher admin level than you.")
+			.arg(command->name)
+		);
+		return;
+	}
+
+	QDateTime expiration = QDateTime::currentDateTime();
+
+	if (args->get(2) == "")
+		expiration.setTime_t(0);
+	else
+	{
+		int secs = parseTime(args->get(2));
+		if(secs < 0)
+		{
+			zUrt::instance()->server()->tell(player,
+				QObject::tr("^3!%1^7: Invalid time format.")
+				.arg(command->name)
+			);
+			return;
+		}
+		expiration.addSecs(secs);
+	}
+
 	Module_Ban *b = dynamic_cast<Module_Ban*>(
 		zUrt::instance()->module("Ban"));
 	b->ban(
@@ -297,13 +324,13 @@ void Module_Admin::cmd_ban(Module_Player *p, int player, Arguments *args, Admin_
 		p->get(target, "cl_guid"),
 		p->get(target, "name"),
 		p->get(player, "name"), // Admin who set the ban
-		QDateTime::currentDateTime().addDays(1)
+		expiration
 	);
 
 	zUrt::instance()->server()->rcon("clientkick " + QString::number(target));
 
 	zUrt::instance()->server()->say(
-		QObject::tr("^3!%1^7: %2^7 has been banned.")
+		QObject::tr("^3!%1^7: %2^7 has been banned for ")
 		.arg(command->name)
 		.arg(p->get(target, "name"))
 	);
@@ -626,4 +653,38 @@ void Module_Admin::cmd_setlevel(Module_Player *p, int player, Arguments *args, A
 		.arg(m_levels[level].name)
 		.arg(p->get(player, "name"))
 	);
+}
+
+int Module_Admin::parseTime(QString expr)
+{
+	int seconds = 0, num = 0, i, size = expr.size(), ch;
+
+	if(!expr[0].isDigit())
+		return -1;
+
+	for (i = 0; i < size; i++)
+	{
+		while(i < size && expr[i].isDigit())
+		{
+			num = num * 10 + expr[i].digitValue();
+			i++;
+		}
+		if(i >= size)
+			break;
+
+		ch = expr[i].toAscii();
+		switch(ch)
+		{
+		       case 'w': num *= 7;
+		       case 'd': num *= 24;
+		       case 'h': num *= 60;
+		       case 'm': num *= 60;
+		       case 's': break;
+		       default:  return -1;
+		}
+		seconds += num;
+		num = 0;
+	}
+
+	return seconds + num;
 }
