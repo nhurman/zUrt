@@ -38,6 +38,19 @@
     </message>
 </context>
 <context>
+    <name>Module_Admin</name>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="334"/>
+        <source>permanently.</source>
+        <translation>de maniere permanente.</translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="336"/>
+        <source>until %3.</source>
+        <translation>jusqu&apos;au %3.</translation>
+    </message>
+</context>
+<context>
     <name>Module_Player</name>
     <message>
         <location filename="../src/modules/Player.cpp" line="59"/>
@@ -311,7 +324,7 @@
     <message>
         <location filename="../src/modules/Admin.cpp" line="264"/>
         <location filename="../src/modules/Admin.cpp" line="296"/>
-        <location filename="../src/modules/Admin.cpp" line="598"/>
+        <location filename="../src/modules/Admin.cpp" line="605"/>
         <source>^3!%1^7: Your target has a higher admin level than you.</source>
         <translation>^3!%1^7 : Votre cible a un niveau d&apos;admin plus eleve que le votre.</translation>
     </message>
@@ -326,22 +339,26 @@
         <translation>^3!%1^7: Format de temps invalide.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="333"/>
-        <source>^3!%1^7: %2^7 has been banned for </source>
-        <translation>^3!%1^7: %2^7 a ete banni pour </translation>
+        <location filename="../src/modules/Admin.cpp" line="332"/>
+        <source>^3!%1^7: %2^7 has been banned </source>
+        <translation>^3!%1^7: %2^7 a ete banni </translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="351"/>
+        <source>^3!%1^7: %2^7 has been banned for </source>
+        <translation type="obsolete">^3!%1^7: %2^7 a ete banni pour </translation>
+    </message>
+    <message>
+        <location filename="../src/modules/Admin.cpp" line="358"/>
         <source>^3!%1^7: Invalid team.</source>
         <translation>^3!%1^7: Equipe inconnue.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="375"/>
+        <location filename="../src/modules/Admin.cpp" line="382"/>
         <source> !%1,</source>
         <translation> !%1,</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/modules/Admin.cpp" line="377"/>
+        <location filename="../src/modules/Admin.cpp" line="384"/>
         <source>^3!%1^7: %n commands available:</source>
         <translation>
             <numerusform>^3!%1^7: %n commande disponible :</numerusform>
@@ -349,39 +366,39 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="391"/>
+        <location filename="../src/modules/Admin.cpp" line="398"/>
         <source>^3!%1^7: Unknown command.</source>
         <translation>^3!%1^7 : Cette commande n&apos;existe pas.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="400"/>
+        <location filename="../src/modules/Admin.cpp" line="407"/>
         <source>^3!%1^7: Access to ^3!%2^7 denied.</source>
         <translation>^3!%1^7 : Vous n&apos;avez pas la permission d&apos;utiliser ^3!%2^7.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="408"/>
+        <location filename="../src/modules/Admin.cpp" line="415"/>
         <source>Syntax: ^3!%1^7%2.</source>
         <translation>Syntaxe : ^3!%1^7%2.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="432"/>
-        <location filename="../src/modules/Admin.cpp" line="608"/>
+        <location filename="../src/modules/Admin.cpp" line="439"/>
+        <location filename="../src/modules/Admin.cpp" line="615"/>
         <source>^3!%1^7: Unknown level.</source>
         <translation>^3!%1^7 : Ce niveau n&apos;existe pas.</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="471"/>
+        <location filename="../src/modules/Admin.cpp" line="478"/>
         <source>%1^7:</source>
         <comment>Level name</comment>
         <translation>%1^7 :</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="475"/>
+        <location filename="../src/modules/Admin.cpp" line="482"/>
         <source> %1^7(%2),</source>
         <translation> %1^7(%2),</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/modules/Admin.cpp" line="483"/>
+        <location filename="../src/modules/Admin.cpp" line="490"/>
         <source>^3!%1^7: %n admins found.</source>
         <translation>
             <numerusform>^3!%1^7 : %n admin trouve.</numerusform>
@@ -389,7 +406,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/modules/Admin.cpp" line="552"/>
+        <location filename="../src/modules/Admin.cpp" line="559"/>
         <source>^3!%1^7: %n levels</source>
         <translation>
             <numerusform>^3!%1^7 : %n niveau</numerusform>
@@ -397,7 +414,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/modules/Admin.cpp" line="554"/>
+        <location filename="../src/modules/Admin.cpp" line="561"/>
         <source>and %n admins loaded.</source>
         <translation>
             <numerusform>et %n admin charge.</numerusform>
@@ -405,12 +422,12 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="618"/>
+        <location filename="../src/modules/Admin.cpp" line="625"/>
         <source>^3!%1^7: You cannot setlevel higher than your own admin level (%1).</source>
         <translation>^3!%1^7: Vous ne pouvez pas augmenter votre niveau (%1).</translation>
     </message>
     <message>
-        <location filename="../src/modules/Admin.cpp" line="650"/>
+        <location filename="../src/modules/Admin.cpp" line="657"/>
         <source>^3!%1^7: %2^7 was given %3^7 admin rights by %4^7.</source>
         <translation>^3!%1^7 : %4^7 a donne les droits de %3^7 a %2^7.</translation>
     </message>

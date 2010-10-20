@@ -299,7 +299,7 @@ void Module_Admin::cmd_ban(Module_Player *p, int player, Arguments *args, Admin_
 		return;
 	}
 
-	QDateTime expiration = QDateTime::currentDateTime();
+	QDateTime expiration = QDateTime::currentDateTimeUtc();
 
 	if (args->get(2) == "")
 		expiration.setTime_t(0);
@@ -314,7 +314,7 @@ void Module_Admin::cmd_ban(Module_Player *p, int player, Arguments *args, Admin_
 			);
 			return;
 		}
-		expiration.addSecs(secs);
+		expiration = expiration.addSecs(secs);
 	}
 
 	Module_Ban *b = dynamic_cast<Module_Ban*>(
@@ -329,10 +329,17 @@ void Module_Admin::cmd_ban(Module_Player *p, int player, Arguments *args, Admin_
 
 	zUrt::instance()->server()->rcon("clientkick " + QString::number(target));
 
-	zUrt::instance()->server()->say(
-		QObject::tr("^3!%1^7: %2^7 has been banned for ")
+	QString s = QObject::tr("^3!%1^7: %2^7 has been banned ");
+	if(expiration.toTime_t() == 0)
+		s += tr("permanently.");
+	else
+		s += tr("until %3.");
+
+	zUrt::instance()->server()->tell(player,
+		s
 		.arg(command->name)
 		.arg(p->get(target, "name"))
+		.arg(expiration.toString("dd/MM/yyyy hh:mm:ss UTC"))
 	);
 }
 
